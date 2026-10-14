@@ -4,6 +4,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   if (!site) return [];
   return [
     "/",
+    "/learn",
+    "/guides",
+    "/planner",
     "/phonics",
     "/reading",
     "/pronunciation",

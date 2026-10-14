@@ -7,6 +7,8 @@ import { isLearnerData } from "@/lib/validation";
 import { useSpeech } from "@/hooks/useSpeech";
 import type { ThemeChoice } from "@/lib/theme";
 import type { VoiceGender } from "@/lib/voices";
+import { Select } from "@/components/ui/Select";
+import { AudioSettings } from "@/components/settings/AudioSettings";
 import { Icon } from "@/components/ui/Icon";
 export default function ProfilePage() {
   const { data, ready, update, user, online, sync, syncState, storageError } =
@@ -49,6 +51,7 @@ export default function ProfilePage() {
           ...value.settings,
           theme: value.settings.theme ?? "system",
           voiceGender: value.settings.voiceGender ?? "female",
+          audioSource: value.settings.audioSource ?? "device",
         },
       }));
       setMessage(
@@ -111,102 +114,73 @@ export default function ProfilePage() {
       <div className="settings-grid">
         <section className="panel settings-panel">
           <h2>Practice preferences</h2>
-          <label className="field-label" htmlFor="theme-select">
-            Theme
-            <select
-              id="theme-select"
-              aria-label="Theme"
-              value={data.settings.theme ?? "system"}
-              onChange={(e) =>
-                update((d) => ({
-                  ...d,
-                  settings: {
-                    ...d.settings,
-                    theme: e.target.value as ThemeChoice,
-                  },
-                }))
-              }
-            >
-              <option value="system">System</option>
-              <option value="light">Light</option>
-              <option value="dark">Dark</option>
-            </select>
-          </label>
+          <Select
+            label="Theme"
+            value={data.settings.theme ?? "system"}
+            options={[
+              { value: "system", label: "System" },
+              { value: "light", label: "Light" },
+              { value: "dark", label: "Dark" },
+            ]}
+            onChange={(theme) =>
+              update((d) => ({
+                ...d,
+                settings: { ...d.settings, theme: theme as ThemeChoice },
+              }))
+            }
+          />
           <p className="small muted">
-            System follows your device’s appearance. Your choice is saved with
-            your practice settings.
+            System follows your device. Light and Dark stay exactly as you
+            choose.
           </p>
-          <label className="field-label">
-            Your daily aim
-            <select
-              value={data.settings.dailyTargetMinutes}
-              onChange={(e) =>
-                update((d) => ({
-                  ...d,
-                  settings: {
-                    ...d.settings,
-                    dailyTargetMinutes: Number(e.target.value),
-                  },
-                }))
-              }
-            >
-              {[15, 20, 25].map((n) => (
-                <option key={n} value={n}>
-                  {n} minutes
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="field-label" htmlFor="voice-choice">
-            Voice
-          </label>
-          <select
-            id="voice-choice"
-            aria-label="Voice"
+          <Select
+            label="Your daily aim"
+            value={String(data.settings.dailyTargetMinutes)}
+            options={[15, 20, 25].map((n) => ({
+              value: String(n),
+              label: `${n} minutes`,
+            }))}
+            onChange={(value) =>
+              update((d) => ({
+                ...d,
+                settings: { ...d.settings, dailyTargetMinutes: Number(value) },
+              }))
+            }
+          />
+          <Select
+            label="Voice"
             value={data.settings.voiceGender ?? "female"}
-            onChange={(e) =>
+            options={[
+              { value: "female", label: "Female" },
+              { value: "male", label: "Male" },
+            ]}
+            onChange={(voiceGender) =>
               update((d) => ({
                 ...d,
                 settings: {
                   ...d.settings,
-                  voiceGender: e.target.value as VoiceGender,
+                  voiceGender: voiceGender as VoiceGender,
                   preferredVoice: "",
                 },
               }))
             }
-          >
-            <option value="female">Female</option>
-            <option value="male">Male</option>
-          </select>
-          <p className="small muted">
-            Voices come from your browser or device. We use your chosen British
-            English voice when its name identifies it; otherwise the best
-            available British English voice is used. Browsers do not provide
-            standard gender metadata. If no British voice is installed, a
-            labelled English fallback is available.
-          </p>
-          <label className="field-label">
-            Slow playback speed
-            <select
-              value={data.settings.slowRate}
-              onChange={(e) =>
-                update((d) => ({
-                  ...d,
-                  settings: { ...d.settings, slowRate: Number(e.target.value) },
-                }))
-              }
-            >
-              {[0.6, 0.65, 0.75].map((n) => (
-                <option key={n} value={n}>
-                  {n === 0.6
-                    ? "Extra slow"
-                    : n === 0.65
-                      ? "Gentle (recommended)"
-                      : "A little quicker"}
-                </option>
-              ))}
-            </select>
-          </label>
+          />
+          <AudioSettings speech={speech} />
+          <Select
+            label="Slow playback speed"
+            value={String(data.settings.slowRate)}
+            options={[
+              { value: "0.6", label: "Extra slow" },
+              { value: "0.65", label: "Gentle (recommended)" },
+              { value: "0.75", label: "A little quicker" },
+            ]}
+            onChange={(value) =>
+              update((d) => ({
+                ...d,
+                settings: { ...d.settings, slowRate: Number(value) },
+              }))
+            }
+          />
           <button
             className="button button-outline"
             onClick={() =>

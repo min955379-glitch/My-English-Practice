@@ -48,6 +48,17 @@ export default function PrivacyPage() {
         voices may need a network connection. Inter is fetched during the
         application build and self-hosted by Next.js at runtime.
       </p>
+      <h2>Optional enhanced audio</h2>
+      <p>
+        Enhanced British playback is optional and only available when the
+        operator configures Azure Speech. It sends listed lesson words, examples
+        or reading passages to Microsoft to produce Ryan (male) or Sonia
+        (female) audio. It does not send your typed answers or microphone
+        recordings. Permission is asked for in this browser and is not restored
+        from a progress import or cloud backup. You can withdraw permission in
+        Settings. An internet connection is required; device speech remains a
+        fallback.
+      </p>
       <h2>Cookies, caching and advertising</h2>
       <p>
         The application uses browser storage for progress, authentication and

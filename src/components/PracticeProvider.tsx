@@ -10,7 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import type { User } from "@supabase/supabase-js";
-import { stageCheckpoint } from "@/lib/checkpoint";
+import { stageCheckpoint, stageSettingsCheckpoint } from "@/lib/checkpoint";
 import { emptyData, readData, writeData } from "@/lib/storage";
 import { supabase } from "@/lib/supabase";
 import type { LearnerData } from "@/lib/types";
@@ -100,6 +100,7 @@ export function PracticeProvider({ children }: { children: ReactNode }) {
   }, [ready, data.settings.theme]);
   const update = useCallback(
     (fn: (data: LearnerData) => LearnerData, markSettings = true) => {
+      const previousSettings = current.current.settings;
       let next = fn(current.current);
       if (markSettings && next.settings !== current.current.settings)
         next = {
@@ -110,10 +111,15 @@ export function PracticeProvider({ children }: { children: ReactNode }) {
       setData(next);
       const key = scope.current;
       const committed = stageCheckpoint(next, key);
+      const preferencesCommitted =
+        next.settings !== previousSettings
+          ? stageSettingsCheckpoint(next, key)
+          : () => {};
       writeChain.current = writeChain.current
         .then(async () => {
           await writeData(next, key);
           committed();
+          preferencesCommitted();
         })
         .catch(() =>
           setStorageError(
@@ -167,6 +173,7 @@ export function PracticeProvider({ children }: { children: ReactNode }) {
                 ...merged.settings,
                 theme: merged.settings.theme ?? "system",
                 voiceGender: merged.settings.voiceGender ?? "female",
+                audioSource: merged.settings.audioSource ?? "device",
               }
             : latest.settings;
         const attempts = [

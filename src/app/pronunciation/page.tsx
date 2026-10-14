@@ -1,112 +1,13 @@
-"use client";
-import { useState } from "react";
-import { words, shortLevelName, levels } from "@/lib/curriculum";
-import { useSpeech } from "@/hooks/useSpeech";
-import { Icon } from "@/components/ui/Icon";
-import { Microphone } from "@/components/practice/Microphone";
-export default function PronunciationPage() {
-  const [index, setIndex] = useState(0);
-  const [level, setLevel] = useState(1);
-  const speech = useSpeech();
-  const collection = words.filter((w) => w.level === level);
-  const word = collection[index % collection.length];
+import { PronunciationPractice } from "@/components/practice/PronunciationPractice";
+import { levelIds } from "@/lib/curriculum";
+export default async function PronunciationPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ level?: string }>;
+}) {
+  const params = await searchParams;
+  const level = Number(params.level);
   return (
-    <div className="page-container">
-      <div className="page-heading">
-        <p className="eyebrow">Find your own voice</p>
-        <h1>Listen. Repeat. Feel more familiar.</h1>
-        <p className="lead">
-          A little spoken practice, without grades or pressure.
-        </p>
-      </div>
-      <div className="practice-grid">
-        <section className="panel pronunciation-panel">
-          <label className="field-label">
-            Choose words
-            <select
-              value={level}
-              onChange={(e) => {
-                setLevel(Number(e.target.value));
-                setIndex(0);
-              }}
-            >
-              {levels.map((definition) => (
-                <option key={definition.id} value={definition.id}>
-                  Level {definition.id} — {shortLevelName(definition.id)}
-                </option>
-              ))}
-            </select>
-          </label>
-          <div className="audio-orb">
-            <Icon name="volume" width={32} height={32} />
-          </div>
-          <h2 className="spoken-word">{word.text}</h2>
-          <p className="ipa">{word.phonetic}</p>
-          <div className="syllable-chips">
-            {word.syllables.map((part, i) => (
-              <span
-                key={i}
-                className={
-                  word.stressPattern.split("-")[i] === "1" ? "stressed" : ""
-                }
-              >
-                {part}
-              </span>
-            ))}
-          </div>
-          <p className="muted">
-            Listen once. Listen slowly. Then say it in your own voice.
-          </p>
-          <div className="audio-buttons">
-            <button
-              className="button button-primary"
-              onClick={() => speech.speak(word.text)}
-            >
-              <Icon name="volume" />
-              Listen
-            </button>
-            <button
-              className="button button-outline"
-              onClick={() => speech.speak(word.text, true)}
-            >
-              <Icon name="play" />
-              Listen slowly
-            </button>
-          </div>
-          {speech.message && (
-            <p className="notice" role="status">
-              {speech.message}
-            </p>
-          )}
-          <p className="example-sentence">{word.example}</p>
-          <button
-            className="text-button"
-            onClick={() => {
-              speech.stop();
-              setIndex((i) => i + 1);
-            }}
-          >
-            Try another word <Icon name="arrow" />
-          </button>
-        </section>
-        <aside className="practice-aside">
-          <Microphone key={`${level}:${index}`} />
-          <div className="soft-note">
-            <Icon name="book" />
-            <p>
-              The darker syllable is stressed. IPA is here if it helps — you do
-              not need to learn the symbols to practise.
-            </p>
-          </div>
-          <div className="soft-note">
-            <Icon name="lock" />
-            <p>
-              Microphone transcripts are hints, not pronunciation grades. They
-              do not affect your spelling progress.
-            </p>
-          </div>
-        </aside>
-      </div>
-    </div>
+    <PronunciationPractice initialLevel={levelIds.has(level) ? level : 1} />
   );
 }

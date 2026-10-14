@@ -11,6 +11,9 @@ export function Footer() {
           <p>Designed for calm, private practice. No scores, no competition.</p>
         </div>
         <nav aria-label="Footer navigation">
+          <Link href="/learn">Learning hub</Link>
+          <Link href="/guides">Study guides</Link>
+          <Link href="/planner">Weekly planner</Link>
           <Link href="/about">About</Link>
           <Link href="/contact">Contact</Link>
           <Link href="/help">Help & accessibility</Link>

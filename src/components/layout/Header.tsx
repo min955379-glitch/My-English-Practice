@@ -5,7 +5,9 @@ import { Icon } from "@/components/ui/Icon";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 const navigation = [
   { href: "/session", label: "Practice" },
+  { href: "/learn", label: "Explore" },
   { href: "/phonics", label: "Phonics" },
+  { href: "/planner", label: "My plan" },
   { href: "/dashboard", label: "My progress" },
 ];
 export function Header() {
@@ -41,10 +43,16 @@ export function Header() {
             ))}
           </ul>
         </nav>
-        <ThemeToggle />
-        <Link href="/profile" className="header-settings" aria-label="Settings">
-          <Icon name="settings" />
-        </Link>
+        <div className="header-controls">
+          <ThemeToggle />
+          <Link
+            href="/profile"
+            className="header-settings"
+            aria-label="Settings"
+          >
+            <Icon name="settings" width={23} height={23} />
+          </Link>
+        </div>
       </div>
     </header>
   );
