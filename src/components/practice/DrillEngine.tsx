@@ -17,6 +17,7 @@ import {
 } from "@/lib/learning";
 import type { Attempt, PracticeSession } from "@/lib/types";
 import { Icon } from "@/components/ui/Icon";
+import { Select } from "@/components/ui/Select";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Microphone } from "./Microphone";
 import { ListenInstructions } from "./ListenInstructions";
@@ -25,14 +26,17 @@ type Mode = "spelling" | "dictation" | "phonics";
 export function DrillEngine({
   mode = "spelling",
   pattern,
+  initialLevel,
 }: {
   mode?: Mode;
   pattern?: string;
+  initialLevel?: number;
 }) {
   const { data, ready, update, online, storageError, sync } = usePractice();
   const speech = useSpeech();
   const [level, setLevel] = useState(
-    mode === "dictation" ? dictationLevels[0].id : levels[0].id,
+    initialLevel ??
+      (mode === "dictation" ? dictationLevels[0].id : levels[0].id),
   );
   const [session, setSession] = useState<PracticeSession | null>(null);
   const [index, setIndex] = useState(0);
@@ -54,6 +58,18 @@ export function DrillEngine({
   const word = session
     ? wordById.get(session.wordIds[session.cursor])
     : undefined;
+  useEffect(() => {
+    const list = input.current?.parentElement?.querySelector(".letter-slots");
+    const current = list?.querySelector(".current") as HTMLElement | undefined;
+    if (list && current) {
+      const top = current.offsetTop - (list as HTMLElement).offsetTop;
+      if (
+        top < list.scrollTop ||
+        top + current.offsetHeight > list.scrollTop + list.clientHeight
+      )
+        list.scrollTop = Math.max(0, top - list.clientHeight / 2);
+    }
+  }, [index]);
   const currentSessionId = session?.id;
   const currentCursor = session?.cursor;
   useEffect(() => {
@@ -503,34 +519,26 @@ export function DrillEngine({
               normally, then a little more slowly.
             </p>
             {mode === "spelling" && !pattern && (
-              <label className="field-label">
-                Your practice level
-                <select
-                  value={level}
-                  onChange={(e) => setLevel(Number(e.target.value))}
-                >
-                  {levels.map((l) => (
-                    <option key={l.id} value={l.id}>
-                      Level {l.id} — {shortLevelName(l.id)}
-                    </option>
-                  ))}
-                </select>
-              </label>
+              <Select
+                label="Your practice level"
+                value={String(level)}
+                options={levels.map((l) => ({
+                  value: String(l.id),
+                  label: `Level ${l.id} — ${shortLevelName(l.id)}`,
+                }))}
+                onChange={(value) => setLevel(Number(value))}
+              />
             )}
             {mode === "dictation" && (
-              <label className="field-label">
-                Dictation level
-                <select
-                  value={level}
-                  onChange={(e) => setLevel(Number(e.target.value))}
-                >
-                  {dictationLevels.map((definition) => (
-                    <option key={definition.id} value={definition.id}>
-                      Level {definition.id} — {shortLevelName(definition.id)}
-                    </option>
-                  ))}
-                </select>
-              </label>
+              <Select
+                label="Dictation level"
+                value={String(level)}
+                options={dictationLevels.map((l) => ({
+                  value: String(l.id),
+                  label: `Level ${l.id} — ${shortLevelName(l.id)}`,
+                }))}
+                onChange={(value) => setLevel(Number(value))}
+              />
             )}
             {mode === "dictation" && (
               <p className="notice">
@@ -706,6 +714,20 @@ export function DrillEngine({
                 {done ? "The complete word" : "Type one letter at a time"}
               </p>
               <div
+                className="typing-progress"
+                aria-label={`Spelling position ${Math.min(index + 1, word.text.length)} of ${word.text.length}`}
+              >
+                <span>
+                  Letter {Math.min(index + 1, word.text.length)} of{" "}
+                  {word.text.length}
+                </span>
+                <div>
+                  <span
+                    style={{ width: `${(index / word.text.length) * 100}%` }}
+                  />
+                </div>
+              </div>
+              <div
                 className={`letter-stage ${done ? "complete" : ""}`}
                 onClick={() => input.current?.focus()}
               >
@@ -713,6 +735,7 @@ export function DrillEngine({
                   {Array.from(word.text).map((letter, i) => (
                     <span
                       key={i}
+                      data-filled={i < index}
                       className={`letter-slot ${letter === " " ? "space-slot" : ""} ${i === index && !done ? "current" : ""} ${i === index && bad ? "wrong-letter" : ""}`}
                     >
                       {i < index
