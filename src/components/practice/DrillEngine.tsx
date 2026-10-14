@@ -3,12 +3,17 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePractice } from "@/components/PracticeProvider";
 import { useSpeech } from "@/hooks/useSpeech";
-import { levels, shortLevelName, wordById, words } from "@/lib/curriculum";
+import {
+  dictationLevels,
+  levels,
+  shortLevelName,
+  wordById,
+  words,
+} from "@/lib/curriculum";
 import {
   mistakeCategory,
   scheduleReview,
   selectSessionWords,
-  unlockedLevel,
 } from "@/lib/learning";
 import type { Attempt, PracticeSession } from "@/lib/types";
 import { Icon } from "@/components/ui/Icon";
@@ -26,7 +31,9 @@ export function DrillEngine({
 }) {
   const { data, ready, update, online, storageError, sync } = usePractice();
   const speech = useSpeech();
-  const [level, setLevel] = useState(mode === "dictation" ? 8 : 1);
+  const [level, setLevel] = useState(
+    mode === "dictation" ? dictationLevels[0].id : levels[0].id,
+  );
   const [session, setSession] = useState<PracticeSession | null>(null);
   const [index, setIndex] = useState(0);
   const [bad, setBad] = useState("");
@@ -47,7 +54,6 @@ export function DrillEngine({
   const word = session
     ? wordById.get(session.wordIds[session.cursor])
     : undefined;
-  const availableLevel = unlockedLevel(data);
   const currentSessionId = session?.id;
   const currentCursor = session?.cursor;
   useEffect(() => {
@@ -145,7 +151,9 @@ export function DrillEngine({
     const ids = pattern
       ? words.filter((w) => w.patternCategory === pattern).map((w) => w.id)
       : mode === "dictation"
-        ? words.filter((w) => w.level === 8).map((w) => w.id)
+        ? words
+            .filter((w) => w.level === level && w.kind !== "word")
+            .map((w) => w.id)
         : selectSessionWords(data, level);
     if (!ids.length) return;
     const next = resume ?? {
@@ -502,13 +510,23 @@ export function DrillEngine({
                   onChange={(e) => setLevel(Number(e.target.value))}
                 >
                   {levels.map((l) => (
-                    <option
-                      key={l.id}
-                      value={l.id}
-                      disabled={l.id > availableLevel}
-                    >
+                    <option key={l.id} value={l.id}>
                       Level {l.id} — {shortLevelName(l.id)}
-                      {l.id > availableLevel ? " (locked)" : ""}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+            {mode === "dictation" && (
+              <label className="field-label">
+                Dictation level
+                <select
+                  value={level}
+                  onChange={(e) => setLevel(Number(e.target.value))}
+                >
+                  {dictationLevels.map((definition) => (
+                    <option key={definition.id} value={definition.id}>
+                      Level {definition.id} — {shortLevelName(definition.id)}
                     </option>
                   ))}
                 </select>
@@ -516,8 +534,8 @@ export function DrillEngine({
             )}
             {mode === "dictation" && (
               <p className="notice">
-                Dictation is an optional preview of Level 8. Trying it does not
-                unlock the spelling levels.
+                Choose any phrase or sentence level. All levels are open from
+                your first visit.
               </p>
             )}
             <button

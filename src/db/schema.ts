@@ -116,7 +116,7 @@ export const levels = pgTable(
     ...timestamps(),
   },
   (table) => [
-    check("levels_id_range", sql`${table.id} between 1 and 8`),
+    check("levels_id_range", sql`${table.id} between 1 and 13`),
     check(
       "levels_accuracy_range",
       sql`${table.unlockAccuracyPercent} between 0 and 100`,
@@ -210,6 +210,10 @@ export const userSettings = pgTable(
     userId: uuid("user_id")
       .primaryKey()
       .references(() => users.id, { onDelete: "cascade" }),
+    voiceGender: varchar("voice_gender", { length: 6 })
+      .notNull()
+      .default("female"),
+    theme: varchar("theme", { length: 10 }).notNull().default("system"),
     timezone: varchar("timezone", { length: 100 }).notNull().default("UTC"),
     language: varchar("language", { length: 10 }).notNull().default("en-GB"),
     slowSpeechRate: doublePrecision("slow_speech_rate").notNull().default(0.65),
@@ -218,6 +222,11 @@ export const userSettings = pgTable(
     ...timestamps(),
   },
   (table) => [
+    check(
+      "settings_voice_gender",
+      sql`${table.voiceGender} in ('female', 'male')`,
+    ),
+    check("settings_theme", sql`${table.theme} in ('system', 'light', 'dark')`),
     check("settings_british_english", sql`${table.language} = 'en-GB'`),
     check(
       "settings_slow_rate",

@@ -1,12 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePractice } from "@/components/PracticeProvider";
-import {
-  accuracy,
-  localDate,
-  unlockedLevel,
-  practiceStreak,
-} from "@/lib/learning";
+import { accuracy, localDate, practiceStreak } from "@/lib/learning";
 import { levels, shortLevelName, wordById, words } from "@/lib/curriculum";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { ProgressBar } from "@/components/ui/ProgressBar";
@@ -39,7 +34,6 @@ export default function DashboardPage() {
     (s) => localDate(s.startedAt, data.settings.timezone) === today,
   );
   const seconds = todaySessions.reduce((sum, s) => sum + s.durationSeconds, 0);
-  const unlocked = unlockedLevel(data);
   const mistakes: Record<string, number> = {};
   data.attempts.forEach((a) =>
     a.mistakeTypes.forEach(
@@ -123,7 +117,7 @@ export default function DashboardPage() {
         <section className="panel">
           <div className="section-heading">
             <h2>Your learning path</h2>
-            <span>8 gentle levels</span>
+            <span>{levels.length} gentle levels</span>
           </div>
           <div className="level-progress-list">
             {levels.map((level) => {
@@ -133,22 +127,14 @@ export default function DashboardPage() {
               ).length;
               return (
                 <div className="level-progress" key={level.id}>
-                  <span
-                    className={`level-number ${level.id > unlocked ? "locked" : ""}`}
-                  >
-                    {level.id > unlocked ? (
-                      <Icon name="lock" width={15} />
-                    ) : (
-                      String(level.id).padStart(2, "0")
-                    )}
+                  <span className="level-number">
+                    {String(level.id).padStart(2, "0")}
                   </span>
                   <div>
                     <div className="level-progress-title">
                       <strong>{shortLevelName(level.id)}</strong>
                       <span>
-                        {level.id > unlocked
-                          ? "Not unlocked yet"
-                          : `${completed} / ${levelWords.length} words`}
+                        {completed} / {levelWords.length} items
                       </span>
                     </div>
                     <ProgressBar
@@ -162,9 +148,9 @@ export default function DashboardPage() {
             })}
           </div>
           <p className="small muted">
-            A new level opens after three qualifying sessions on separate days,
-            including one in the last 48 hours. Aim for 80% independent accuracy
-            (75% before Level 8).
+            Every level is open from your first visit. Choose what feels useful;
+            your accuracy, completion and reviews are recorded without limiting
+            access.
           </p>
         </section>
         <div className="dashboard-side">
