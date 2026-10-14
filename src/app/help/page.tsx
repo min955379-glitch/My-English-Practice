@@ -6,10 +6,10 @@ export default function HelpPage() {
       <h1>Your practice, explained.</h1>
       <h2>How do I start?</h2>
       <p>
-        Choose Practice, select an unlocked level, and press Start my practice.
-        The word plays at normal speed and then slowly. Type one letter at a
-        time. Spaces must also be typed in dictation. Uppercase and lowercase
-        letters are accepted equally.
+        Choose Practice, select any level, and press Start my practice. The word
+        plays at normal speed and then slowly. Type one letter at a time. Spaces
+        must also be typed in dictation. Uppercase and lowercase letters are
+        accepted equally.
       </p>
       <h2>What happens after a mistake?</h2>
       <p>
@@ -30,17 +30,14 @@ export default function HelpPage() {
       </p>
       <p>
         Mastery requires three independent successes on separate local dates,
-        including a review after at least seven days. Level unlocks require
-        three qualifying sessions on separate dates, including a recent session.
-        Dictation and pronunciation offer optional previews of harder vocabulary
-        without unlocking the spelling curriculum.
+        including a review after at least seven days. All thirteen levels are
+        open immediately. Accuracy and mastery never limit access.
       </p>
       <h2>Where does progress go?</h2>
       <p>
-        Guest progress stays in this browser. Accounts are optional and only
-        available on installations with Supabase configured. Signed-in progress
-        has a separate browser store. Use Sync now for cloud backup, or export a
-        file in Settings.
+        Progress stays in this browser. Export a file in Settings to keep a
+        backup or move it to another device. There are no sign-in or sign-up
+        screens. Existing authenticated sessions can still use cloud sync.
       </p>
       <h2>Can I practise offline?</h2>
       <p>
@@ -68,9 +65,11 @@ export default function HelpPage() {
       <h2>Audio is not playing</h2>
       <p>
         Press Listen after starting the session; some browsers require a direct
-        gesture. Check device volume and choose a British English voice in
-        Settings. If none is available, install an en-GB voice on your device. A
-        standard-English fallback is clearly labelled.
+        gesture. Check device volume and choose Female or Male under Voice in
+        Settings. If a named voice of your choice is unavailable, the best
+        installed British English voice is used. If none is available, install
+        an en-GB voice on your device. A standard-English fallback is clearly
+        labelled.
       </p>
       <p>
         <Link href="/profile">Open Settings</Link> ·{" "}

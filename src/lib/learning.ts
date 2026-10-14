@@ -1,5 +1,5 @@
 import type { Attempt, LearnerData, Review } from "./types";
-import { words, wordById } from "./curriculum";
+import { words, wordById, levels } from "./curriculum";
 export function localDate(time: string | number | Date, timezone: string) {
   return new Intl.DateTimeFormat("en-CA", {
     timeZone: timezone,
@@ -65,49 +65,18 @@ export function scheduleReview(
     lastMistake: clean ? previous?.lastMistake : attempt.attemptedAt,
   };
 }
-export function unlockedLevel(data: LearnerData) {
-  let unlocked = 1;
-  for (let level = 1; level <= 7; level++) {
-    const threshold = level === 7 ? 0.75 : 0.8;
-    const qualifying = data.sessions
-      .filter((s) => s.level === level && s.completed)
-      .filter((s) => {
-        const attempts = data.attempts.filter((a) => a.sessionId === s.id);
-        const initial = [
-          ...new Map(
-            attempts.map((a) => [
-              a.wordId,
-              attempts.find((b) => b.wordId === a.wordId)!,
-            ]),
-          ).values(),
-        ];
-        return (
-          initial.length >= 5 &&
-          initial.filter((a) => a.isFirstTry).length / initial.length >=
-            threshold
-        );
-      });
-    const days = new Set(
-      qualifying.map((s) => localDate(s.startedAt, data.settings.timezone)),
-    );
-    const recent = qualifying.some(
-      (s) =>
-        Date.now() - new Date(s.endedAt ?? s.startedAt).getTime() <
-        48 * 3600_000,
-    );
-    if (days.size < 3 || !recent) break;
-    unlocked = level + 1;
-  }
-  return unlocked;
+// Compatibility helper only. Access never depends on attempts, accuracy or sessions.
+export function unlockedLevel(data?: LearnerData) {
+  void data;
+  return Math.max(...levels.map((level) => level.id));
 }
 export function selectSessionWords(
   data: LearnerData,
   level: number,
   now = Date.now(),
 ) {
-  const highest = unlockedLevel(data);
   const reviews = Object.values(data.reviews)
-    .filter((r) => (wordById.get(r.wordId)?.level ?? 9) <= highest)
+    .filter((r) => wordById.has(r.wordId))
     .filter(
       (r) =>
         localDate(r.dueDate, data.settings.timezone) <=
@@ -115,7 +84,7 @@ export function selectSessionWords(
     )
     .sort((a, b) => a.dueDate.localeCompare(b.dueDate));
   const mistakes = Object.values(data.reviews)
-    .filter((r) => (wordById.get(r.wordId)?.level ?? 9) <= highest)
+    .filter((r) => wordById.has(r.wordId))
     .filter(
       (r) =>
         r.lastMistake &&

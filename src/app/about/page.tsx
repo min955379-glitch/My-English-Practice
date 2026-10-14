@@ -34,8 +34,9 @@ export default function AboutPage() {
         >
           My English Practice repository
         </a>
-        . Browser audio and microphone features depend on your device. Account
-        sync is available on installations with Supabase configured.
+        . Browser audio and microphone features depend on your device. Existing
+        authenticated sessions can still sync where Supabase is configured;
+        there are no sign-in or sign-up screens. All thirteen levels are open.
       </p>
       <p>
         <Link href="/session">Begin your practice</Link> ·{" "}

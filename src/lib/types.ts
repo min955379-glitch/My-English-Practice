@@ -1,3 +1,6 @@
+import type { VoiceGender } from "./voices";
+import type { ThemeChoice } from "./theme";
+
 export type Word = {
   id: string;
   text: string;
@@ -63,6 +66,9 @@ export type Review = {
   lastMistake?: string;
 };
 export type Settings = {
+  theme?: ThemeChoice;
+  voiceGender?: VoiceGender; // Legacy version-1 exports may omit this.
+  updatedAt?: string; // Optional only for compatibility with legacy exports.
   dailyTargetMinutes: number;
   preferredVoice: string;
   slowRate: number;

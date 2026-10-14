@@ -20,7 +20,7 @@ export type ButtonProps = NativeButtonProps | LinkButtonProps;
 
 const variants = {
   primary:
-    "border-transparent bg-calm-teal-dark text-white hover:bg-calm-text-primary",
+    "border-transparent bg-[var(--button-background)] text-[var(--button-foreground)] hover:bg-[var(--button-hover)]",
   secondary:
     "border-calm-stone-border bg-calm-surface text-calm-text-primary hover:bg-calm-stone-light",
   ghost:

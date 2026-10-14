@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { words, shortLevelName } from "@/lib/curriculum";
+import { words, shortLevelName, levels } from "@/lib/curriculum";
 import { useSpeech } from "@/hooks/useSpeech";
 import { Icon } from "@/components/ui/Icon";
 import { Microphone } from "@/components/practice/Microphone";
@@ -30,9 +30,9 @@ export default function PronunciationPage() {
                 setIndex(0);
               }}
             >
-              {Array.from({ length: 8 }, (_, i) => (
-                <option key={i} value={i + 1}>
-                  Level {i + 1} — {shortLevelName(i + 1)}
+              {levels.map((definition) => (
+                <option key={definition.id} value={definition.id}>
+                  Level {definition.id} — {shortLevelName(definition.id)}
                 </option>
               ))}
             </select>

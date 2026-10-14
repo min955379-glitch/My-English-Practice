@@ -3,7 +3,12 @@ import curriculum from "../content/curriculum.json";
 import { getDb, closeDb } from "./index";
 import { levels, phonicsPatterns, words, type NewWord } from "./schema";
 
-export const levelSeed: (typeof levels.$inferInsert)[] = curriculum.levels;
+export const levelSeed: (typeof levels.$inferInsert)[] = curriculum.levels.map(
+  ({ shortName, ...level }) => {
+    void shortName;
+    return level;
+  },
+);
 export const patternSeed: (typeof phonicsPatterns.$inferInsert)[] =
   curriculum.patterns;
 export const wordSeed: NewWord[] = curriculum.words.map(({ id, ...word }) => {
@@ -17,17 +22,32 @@ const patternDescriptions = Object.fromEntries(
 export function validateSeed(): void {
   const keys = new Set<string>();
   for (const level of levelSeed) {
-    if (wordSeed.filter((word) => word.level === level.id).length < 5) {
-      throw new Error(`Level ${level.id} needs at least five practice items.`);
+    const minimum = level.id <= 7 ? 30 : 33;
+    if (wordSeed.filter((word) => word.level === level.id).length < minimum) {
+      throw new Error(
+        `Level ${level.id} needs at least ${minimum} practice items.`,
+      );
     }
   }
   for (const word of wordSeed) {
-    const key = `${word.level}:${word.text}`;
+    const key = `${word.level}:${word.text.toLocaleLowerCase("en-GB")}`;
     if (keys.has(key)) throw new Error(`Duplicate seed item: ${key}`);
     keys.add(key);
     if (!patternDescriptions[word.patternCategory]) {
       throw new Error(`Unknown pattern for ${word.text}.`);
     }
+    if (
+      !word.phonetic ||
+      !word.meaning ||
+      !word.example ||
+      !word.wordFamily ||
+      !word.syllableSplit ||
+      word.syllables.length !== word.syllableCount ||
+      !["word", "phrase", "sentence"].includes(word.kind ?? "word")
+    )
+      throw new Error(`Incomplete metadata for ${word.text}.`);
+    if (!levelSeed.some((level) => level.id === word.level))
+      throw new Error(`Unknown level for ${word.text}.`);
     if (word.stressPattern.split("-").length !== word.syllableCount) {
       throw new Error(`Syllable and stress counts differ for ${word.text}.`);
     }

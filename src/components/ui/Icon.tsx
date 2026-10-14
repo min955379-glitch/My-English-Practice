@@ -16,8 +16,12 @@ export type IconName =
   | "download"
   | "repeat"
   | "lock"
-  | "sun";
+  | "sun"
+  | "moon"
+  | "monitor";
 const paths: Record<IconName, string> = {
+  moon: "M21 13.1A9 9 0 0 1 10.9 3 9 9 0 1 0 21 13.1Z",
+  monitor: "M3 4h18v12H3V4Zm9 12v4m-4 0h8",
   book: "M12 6C9 4 5 4 3 5v14c3-1 6-1 9 1 3-2 6-2 9-1V5c-2-1-6-1-9 1Zm0 0v14",
   play: "m9 5 11 7-11 7V5Z",
   arrow: "M4 12h16m-6-6 6 6-6 6",

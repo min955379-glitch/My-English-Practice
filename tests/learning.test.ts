@@ -7,7 +7,7 @@ import {
   unlockedLevel,
 } from "../src/lib/learning";
 import { emptyData } from "../src/lib/storage";
-import { words } from "../src/lib/curriculum";
+import { words, levels } from "../src/lib/curriculum";
 import { isLearnerData } from "../src/lib/validation";
 import type { Attempt } from "../src/lib/types";
 const attempt = (overrides: Partial<Attempt> = {}): Attempt => ({
@@ -27,8 +27,11 @@ const attempt = (overrides: Partial<Attempt> = {}): Attempt => ({
   ...overrides,
 });
 test("curriculum has at least five items for each level", () => {
-  for (let i = 1; i <= 8; i++)
-    assert.ok(words.filter((w) => w.level === i).length >= 5);
+  for (const level of levels)
+    assert.ok(
+      words.filter((w) => w.level === level.id).length >=
+        (level.id >= 9 ? 8 : 5),
+    );
 });
 test("mistakes return tomorrow with one-day interval", () => {
   const review = scheduleReview(
@@ -105,8 +108,8 @@ test("due words are selected even before their exact time today", () => {
     ),
   );
 });
-test("new learner begins at Level 1", () =>
-  assert.equal(unlockedLevel(emptyData()), 1));
+test("new learner can access every level", () =>
+  assert.equal(unlockedLevel(emptyData()), 13));
 test("invalid imported data is rejected", () => {
   assert.equal(isLearnerData({ version: 1 }), false);
   assert.equal(
@@ -118,7 +121,7 @@ test("invalid imported data is rejected", () => {
   );
   assert.equal(isLearnerData(emptyData()), true);
 });
-test("previewed harder words do not enter locked spelling levels", () => {
+test("due reviews from any level are eligible without an access gate", () => {
   const data = emptyData();
   const review = scheduleReview(
     undefined,
@@ -130,6 +133,6 @@ test("previewed harder words do not enter locked spelling levels", () => {
     selectSessionWords(data, 1, Date.parse("2026-10-15T09:00:00Z")).includes(
       review.wordId,
     ),
-    false,
+    true,
   );
 });

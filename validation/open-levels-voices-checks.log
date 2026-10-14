@@ -1,0 +1,10 @@
+
+> my-english-practice@0.1.0 lint
+> eslint .
+
+
+> my-english-practice@0.1.0 typecheck
+> next typegen && tsc --noEmit
+
+Generating route types...
+✓ Types generated successfully

@@ -1,0 +1,116 @@
+
+> my-english-practice@0.1.0 test
+> node --import tsx --test tests/*.test.ts
+
+TAP version 13
+# Subtest: 13 complete levels, 83 items and 24 recognised patterns
+ok 1 - 13 complete levels, 83 items and 24 recognised patterns
+  ---
+  duration_ms: 1.791138
+  type: 'test'
+  ...
+# Subtest: all advanced levels unlock using separate-day independent accuracy and stay earned
+ok 2 - all advanced levels unlock using separate-day independent accuracy and stay earned
+  ---
+  duration_ms: 40.298192
+  type: 'test'
+  ...
+# Subtest: same-day repetition and below-threshold practice cannot unlock advanced levels
+ok 3 - same-day repetition and below-threshold practice cannot unlock advanced levels
+  ---
+  duration_ms: 6.800138
+  type: 'test'
+  ...
+# Subtest: legacy exports work, advanced sessions import, invalid themes and level 14 fail
+ok 4 - legacy exports work, advanced sessions import, invalid themes and level 14 fail
+  ---
+  duration_ms: 1.365446
+  type: 'test'
+  ...
+# Subtest: prepaint theme respects choice, OS, invalid choice and unavailable storage
+ok 5 - prepaint theme respects choice, OS, invalid choice and unavailable storage
+  ---
+  duration_ms: 4.222357
+  type: 'test'
+  ...
+# Subtest: cloud theme round trip prefers latest edit even without attempts and handles legacy
+ok 6 - cloud theme round trip prefers latest edit even without attempts and handles legacy
+  ---
+  duration_ms: 0.464825
+  type: 'test'
+  ...
+# Subtest: migrations enforce cross-user RLS and session ownership
+ok 7 - migrations enforce cross-user RLS and session ownership
+  ---
+  duration_ms: 3139.264181
+  type: 'test'
+  ...
+# Subtest: curriculum has at least five items for each level
+ok 8 - curriculum has at least five items for each level
+  ---
+  duration_ms: 1.819121
+  type: 'test'
+  ...
+# Subtest: mistakes return tomorrow with one-day interval
+ok 9 - mistakes return tomorrow with one-day interval
+  ---
+  duration_ms: 15.03619
+  type: 'test'
+  ...
+# Subtest: same-day success cannot create mastery
+ok 10 - same-day success cannot create mastery
+  ---
+  duration_ms: 1.861796
+  type: 'test'
+  ...
+# Subtest: separate days and a long interval earn mastery
+ok 11 - separate days and a long interval earn mastery
+  ---
+  duration_ms: 1.174392
+  type: 'test'
+  ...
+# Subtest: new mistake removes mastery
+ok 12 - new mistake removes mastery
+  ---
+  duration_ms: 0.783876
+  type: 'test'
+  ...
+# Subtest: assisted retries do not inflate accuracy
+ok 13 - assisted retries do not inflate accuracy
+  ---
+  duration_ms: 1.741159
+  type: 'test'
+  ...
+# Subtest: due words are selected even before their exact time today
+ok 14 - due words are selected even before their exact time today
+  ---
+  duration_ms: 1.100717
+  type: 'test'
+  ...
+# Subtest: new learner begins at Level 1
+ok 15 - new learner begins at Level 1
+  ---
+  duration_ms: 0.254225
+  type: 'test'
+  ...
+# Subtest: invalid imported data is rejected
+ok 16 - invalid imported data is rejected
+  ---
+  duration_ms: 1.831566
+  type: 'test'
+  ...
+# Subtest: previewed harder words do not enter locked spelling levels
+ok 17 - previewed harder words do not enter locked spelling levels
+  ---
+  duration_ms: 0.798184
+  type: 'test'
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 17
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4542.072344

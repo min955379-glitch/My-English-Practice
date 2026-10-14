@@ -13,13 +13,16 @@ export default function PrivacyPage() {
       <p>
         In guest mode, spelling attempts, sessions, mistakes, review schedules
         and preferences are stored in your browser’s IndexedDB. This data is not
-        sent to the website’s database unless you sign in and explicitly sync.
-        Clearing browser data can remove it. Export a backup from Settings if
-        you want to keep a copy.
+        sent to the website’s database unless an existing authenticated session
+        uses cloud sync. Clearing browser data can remove it. Export a backup
+        from Settings if you want to keep a copy. A small, temporary
+        browser-storage checkpoint protects unfinished letter drafts during a
+        reload.
       </p>
-      <h2>Optional accounts</h2>
+      <h2>Existing authenticated sessions</h2>
       <p>
-        When the operator configures Supabase, accounts use Supabase
+        Sign-in and sign-up screens are not provided. Previously authenticated
+        sessions, when Supabase is configured, continue to use Supabase
         Authentication. Supabase processes your email address and authentication
         information. Signed-in progress is stored separately from guest
         progress. Cloud sync sends attempts, session information, review

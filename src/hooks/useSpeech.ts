@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { selectSpeechVoice, voiceFallbackMessage } from "@/lib/voices";
 import { usePractice } from "@/components/PracticeProvider";
 export function useSpeech() {
   const { data } = usePractice();
@@ -27,29 +28,18 @@ export function useSpeech() {
         return;
       }
       const available = window.speechSynthesis.getVoices();
-      const preferred = available.find(
-        (v) =>
-          v.voiceURI === data.settings.preferredVoice &&
-          v.lang.toLowerCase().replace("_", "-") === "en-gb",
+      const gender = data.settings.voiceGender ?? "female";
+      const selection = selectSpeechVoice(
+        available,
+        gender,
+        data.settings.preferredVoice,
       );
-      const voice =
-        preferred ??
-        available.find(
-          (v) => v.lang.toLowerCase().replace("_", "-") === "en-gb",
-        ) ??
-        available.find((v) => v.lang.startsWith("en"));
+      const voice = selection.voice;
+      setMessage(voiceFallbackMessage(gender, selection));
       if (!voice) {
-        setMessage(
-          "No English voice is installed. You can use the written hints, or install an English voice in your device settings.",
-        );
         onEnd?.();
         return;
       }
-      setMessage(
-        voice.lang.toLowerCase().replace("_", "-") === "en-gb"
-          ? ""
-          : "Using a standard English voice. Install a British English voice for en-GB pronunciation.",
-      );
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       active.current = utterance;
@@ -70,7 +60,11 @@ export function useSpeech() {
       };
       window.speechSynthesis.speak(utterance);
     },
-    [data.settings.preferredVoice, data.settings.slowRate],
+    [
+      data.settings.preferredVoice,
+      data.settings.voiceGender,
+      data.settings.slowRate,
+    ],
   );
   const stop = () => {
     window.speechSynthesis?.cancel();

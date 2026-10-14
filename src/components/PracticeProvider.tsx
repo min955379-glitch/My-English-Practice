@@ -10,10 +10,12 @@ import {
   type ReactNode,
 } from "react";
 import type { User } from "@supabase/supabase-js";
+import { stageCheckpoint } from "@/lib/checkpoint";
 import { emptyData, readData, writeData } from "@/lib/storage";
 import { supabase } from "@/lib/supabase";
 import type { LearnerData } from "@/lib/types";
 import { scheduleReview } from "@/lib/learning";
+import { applyTheme, THEME_KEY, isThemeChoice } from "@/lib/theme";
 
 type Context = {
   data: LearnerData;
@@ -84,22 +86,58 @@ export function PracticeProvider({ children }: { children: ReactNode }) {
       window.removeEventListener("offline", connection);
     };
   }, []);
-  const update = useCallback((fn: (data: LearnerData) => LearnerData) => {
-    const next = fn(current.current);
-    current.current = next;
-    setData(next);
-    const key = scope.current;
-    writeChain.current = writeChain.current
-      .then(() => writeData(next, key))
-      .catch(() =>
-        setStorageError(
-          "Your latest progress could not be saved. Export a copy from Settings before closing this tab.",
-        ),
-      );
-  }, []);
+  useEffect(() => {
+    if (!ready) return;
+    const theme = data.settings.theme ?? "system";
+    applyTheme(theme);
+    try {
+      localStorage.setItem(THEME_KEY, theme);
+    } catch {}
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const change = () => applyTheme(theme);
+    media.addEventListener("change", change);
+    return () => media.removeEventListener("change", change);
+  }, [ready, data.settings.theme]);
+  const update = useCallback(
+    (fn: (data: LearnerData) => LearnerData, markSettings = true) => {
+      let next = fn(current.current);
+      if (markSettings && next.settings !== current.current.settings)
+        next = {
+          ...next,
+          settings: { ...next.settings, updatedAt: new Date().toISOString() },
+        };
+      current.current = next;
+      setData(next);
+      const key = scope.current;
+      const committed = stageCheckpoint(next, key);
+      writeChain.current = writeChain.current
+        .then(async () => {
+          await writeData(next, key);
+          committed();
+        })
+        .catch(() =>
+          setStorageError(
+            "Your latest progress could not be saved. Export a copy from Settings before closing this tab.",
+          ),
+        );
+    },
+    [],
+  );
+  useEffect(() => {
+    const changed = (event: StorageEvent) => {
+      if (event.key === THEME_KEY && isThemeChoice(event.newValue)) {
+        const theme = event.newValue;
+        update((d) => ({ ...d, settings: { ...d.settings, theme } }));
+      }
+    };
+    window.addEventListener("storage", changed);
+    return () => window.removeEventListener("storage", changed);
+  }, [update]);
   const sync = useCallback(async () => {
     if (!supabase || !user) {
-      setSyncState("Sign in to sync across devices");
+      setSyncState(
+        "No existing authenticated session — progress stays on this device",
+      );
       return;
     }
     if (!navigator.onLine) {
@@ -108,6 +146,7 @@ export function PracticeProvider({ children }: { children: ReactNode }) {
     }
     setSyncState("Syncing…");
     const g = generation.current;
+    const sentSettings = current.current.settings;
     try {
       const { data: auth } = await supabase.auth.getSession();
       const response = await fetch("/api/sync", {
@@ -122,6 +161,14 @@ export function PracticeProvider({ children }: { children: ReactNode }) {
       const merged = (await response.json()) as LearnerData;
       if (generation.current !== g) return;
       update((latest) => {
+        const settings =
+          latest.settings === sentSettings
+            ? {
+                ...merged.settings,
+                theme: merged.settings.theme ?? "system",
+                voiceGender: merged.settings.voiceGender ?? "female",
+              }
+            : latest.settings;
         const attempts = [
           ...new Map(
             [...merged.attempts, ...latest.attempts].map((a) => [a.id, a]),
@@ -132,10 +179,11 @@ export function PracticeProvider({ children }: { children: ReactNode }) {
           reviews[attempt.wordId] = scheduleReview(
             reviews[attempt.wordId],
             attempt,
-            latest.settings.timezone,
+            settings.timezone,
           );
         return {
           ...latest,
+          settings,
           attempts,
           sessions: [
             ...new Map(
@@ -144,7 +192,7 @@ export function PracticeProvider({ children }: { children: ReactNode }) {
           ],
           reviews,
         };
-      });
+      }, false);
       setSyncState("Synced with your account");
     } catch {
       setSyncState(

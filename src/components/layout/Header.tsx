@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icon } from "@/components/ui/Icon";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 const navigation = [
   { href: "/session", label: "Practice" },
   { href: "/phonics", label: "Phonics" },
@@ -40,11 +41,8 @@ export function Header() {
             ))}
           </ul>
         </nav>
-        <Link
-          href="/profile"
-          className="header-settings"
-          aria-label="Settings and account"
-        >
+        <ThemeToggle />
+        <Link href="/profile" className="header-settings" aria-label="Settings">
           <Icon name="settings" />
         </Link>
       </div>

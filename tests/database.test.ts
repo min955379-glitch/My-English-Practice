@@ -1,6 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
+import { drizzle } from "drizzle-orm/pglite";
+import { levels, words, phonicsPatterns } from "../src/db/schema";
+import { levelSeed, patternSeed, wordSeed } from "../src/db/seed";
 import { PGlite } from "@electric-sql/pglite";
 
 test("migrations enforce cross-user RLS and session ownership", async () => {
@@ -21,10 +24,44 @@ test("migrations enforce cross-user RLS and session ownership", async () => {
     const a = "00000000-0000-4000-8000-000000000001";
     const b = "00000000-0000-4000-8000-000000000002";
     await db.exec(
-      `insert into auth.users values ('${a}'),('${b}'); insert into public.levels(id,name,description) values (1,'Short words','Short words'); insert into public.users(id) values ('${a}'),('${b}'); insert into profiles(user_id,display_name) values ('${a}','Learner A'),('${b}','Learner B');`,
+      `insert into auth.users values ('${a}'),('${b}'); insert into public.users(id) values ('${a}'),('${b}'); insert into profiles(user_id,display_name) values ('${a}','Learner A'),('${b}','Learner B');`,
     );
-    await db.exec(`insert into phonics_patterns(category,description,example_words,order_index) values ('short_cvc','Short vowels','["cat"]',0);
-      insert into words(id,text,phonetic,syllables,syllable_count,syllable_split,stress_pattern,level,pattern_category,word_family,meaning,example) values (1,'cat','/kæt/','["cat"]',1,'cat','1',1,'short_cvc','-at','A domestic animal.','The cat is outside.');`);
+    const orm = drizzle(db);
+    await orm.insert(levels).values(levelSeed);
+    await orm.insert(phonicsPatterns).values(patternSeed);
+    await orm.insert(words).values(wordSeed);
+    assert.equal((await db.query("select * from levels")).rows.length, 13);
+    assert.equal((await db.query("select * from words")).rows.length, 408);
+    await assert.rejects(
+      db.exec("insert into levels(id,name,description) values (14,'No','No');"),
+    );
+    await db.exec(
+      `insert into user_settings(user_id,theme,voice_gender) values ('${a}','dark','male');`,
+    );
+    assert.equal(
+      (await db.query<{ theme: string }>("select theme from user_settings"))
+        .rows[0].theme,
+      "dark",
+    );
+    await assert.rejects(db.exec(`update user_settings set theme='invalid';`));
+    assert.equal(
+      (
+        await db.query<{ voice_gender: string }>(
+          "select voice_gender from user_settings",
+        )
+      ).rows[0].voice_gender,
+      "male",
+    );
+    await assert.rejects(
+      db.exec(`update user_settings set voice_gender='unknown';`),
+    );
+    // Re-running the same JSON-derived seed is idempotent and preserves identities.
+    for (const word of wordSeed)
+      await orm
+        .insert(words)
+        .values(word)
+        .onConflictDoUpdate({ target: [words.level, words.text], set: word });
+    assert.equal((await db.query("select * from words")).rows.length, 408);
     await db.exec(
       `set role authenticated; select set_config('request.jwt.claim.sub','${a}',false);`,
     );

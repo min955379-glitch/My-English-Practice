@@ -27,16 +27,16 @@
 
 ## Phase 2 — Teaching and progress
 
-- [x] All eight PRD-defined levels and forty-three starter items.
+- [x] All eight original levels plus advanced Levels 9–13: 408 total practice items and twenty-four patterns.
 - [x] Phonics patterns, syllable chunks, stress and word-family metadata.
 - [x] Adapted FSRS-style scheduler with separate-day mastery.
 - [x] Accuracy, mastery, mistake patterns, level progress and session history.
-- [x] Level unlock rules and locked-level review filtering.
-- [x] Local settings and progress export/import.
+- [x] All thirteen levels open immediately, with no lock labels, disabled level options or review access gates.
+- [x] Local settings, System/Light/Dark themes, Female/Male British voice preference, prepaint restoration and progress export/import.
 - [x] Authenticated Drizzle sync and server-side review recomputation.
-- [x] Supabase account UI with separate account/guest stores.
-- [ ] Verify sign-up, sign-in, sync and cross-device restoration against live Supabase.
-- [ ] Expand the starter curriculum after learner/content review.
+- [x] Separate existing account/guest stores; all sign-in/sign-up forms and entry points removed.
+- [ ] Verify existing-session sync and cross-device restoration against live Supabase.
+- [ ] Complete independent teaching/editorial review of the expanded curriculum and regional IPA variants.
 
 **Done when:** local learning and metrics are reliable, and the configured hosted sync path passes live account tests. Local tests pass; cloud verification remains open.
 
@@ -46,7 +46,7 @@
 - [x] Optional recognition with explicit consent and “I heard” feedback.
 - [x] Non-recognition alternative and supportive error handling.
 - [x] Short adult reading passages and optional self-comparison timer.
-- [x] Phrase dictation with spaces and per-letter corrections.
+- [x] Phrase/sentence dictation with spaces and per-letter corrections, including expanded Levels 8 and 13.
 - [ ] Manually test recognition permissions and transcripts on supported real browsers.
 - [ ] Review audio quality with an adult beginner using a British English voice.
 
@@ -55,7 +55,7 @@
 ## Phase 4 — Release preparation
 
 - [x] Responsive landing page and learning pages.
-- [x] Automated accessibility checks and contrast fixes.
+- [x] Automated WCAG AA checks on all thirteen public/practice pages in light and dark, plus mobile wrong-letter and feedback states.
 - [x] Public About, Contact, Help, Privacy and Terms pages.
 - [x] Production service-worker caching, sitemap and robots rules.
 - [x] Progress reset and authenticated account-deletion implementation.

@@ -1,5 +1,8 @@
+import { recoverCheckpoint } from "./checkpoint";
 import { openDB } from "idb";
 import type { LearnerData } from "./types";
+import { isVoiceGender } from "./voices";
+import { isThemeChoice } from "./theme";
 export function emptyData(): LearnerData {
   return {
     version: 1,
@@ -7,6 +10,8 @@ export function emptyData(): LearnerData {
     sessions: [],
     reviews: {},
     settings: {
+      theme: "system",
+      voiceGender: "female",
       dailyTargetMinutes: 20,
       preferredVoice: "",
       slowRate: 0.65,
@@ -24,7 +29,22 @@ const database = () =>
 export async function readData(scope = "local"): Promise<LearnerData> {
   const db = await database();
   try {
-    return (await db.get("learner", scope)) ?? emptyData();
+    const data: LearnerData = recoverCheckpoint(
+      (await db.get("learner", scope)) ?? emptyData(),
+      scope,
+    );
+    return {
+      ...data,
+      settings: {
+        ...data.settings,
+        voiceGender: isVoiceGender(data.settings.voiceGender)
+          ? data.settings.voiceGender
+          : "female",
+        theme: isThemeChoice(data.settings.theme)
+          ? data.settings.theme
+          : "system",
+      },
+    };
   } finally {
     db.close();
   }

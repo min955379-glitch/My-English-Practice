@@ -1,0 +1,2 @@
+ALTER TABLE "user_settings" ADD COLUMN "voice_gender" varchar(6) DEFAULT 'female' NOT NULL;--> statement-breakpoint
+ALTER TABLE "user_settings" ADD CONSTRAINT "settings_voice_gender" CHECK ("user_settings"."voice_gender" in ('female', 'male'));
