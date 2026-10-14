@@ -1,4 +1,4 @@
-import { recoverCheckpoint } from "./checkpoint";
+import { recoverCheckpoint, recoverSettingsCheckpoint } from "./checkpoint";
 import { openDB } from "idb";
 import type { LearnerData } from "./types";
 import { isVoiceGender } from "./voices";
@@ -12,6 +12,7 @@ export function emptyData(): LearnerData {
     settings: {
       theme: "system",
       voiceGender: "female",
+      audioSource: "device",
       dailyTargetMinutes: 20,
       preferredVoice: "",
       slowRate: 0.65,
@@ -30,13 +31,18 @@ export async function readData(scope = "local"): Promise<LearnerData> {
   const db = await database();
   try {
     const data: LearnerData = recoverCheckpoint(
-      (await db.get("learner", scope)) ?? emptyData(),
+      recoverSettingsCheckpoint(
+        (await db.get("learner", scope)) ?? emptyData(),
+        scope,
+      ),
       scope,
     );
     return {
       ...data,
       settings: {
         ...data.settings,
+        audioSource:
+          data.settings.audioSource === "enhanced" ? "enhanced" : "device",
         voiceGender: isVoiceGender(data.settings.voiceGender)
           ? data.settings.voiceGender
           : "female",

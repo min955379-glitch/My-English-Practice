@@ -55,6 +55,26 @@ test("migrations enforce cross-user RLS and session ownership", async () => {
     await assert.rejects(
       db.exec(`update user_settings set voice_gender='unknown';`),
     );
+    assert.equal(
+      (
+        await db.query<{ audio_source: string }>(
+          "select audio_source from user_settings",
+        )
+      ).rows[0].audio_source,
+      "device",
+    );
+    await db.exec("update user_settings set audio_source='enhanced';");
+    assert.equal(
+      (
+        await db.query<{ audio_source: string }>(
+          "select audio_source from user_settings",
+        )
+      ).rows[0].audio_source,
+      "enhanced",
+    );
+    await assert.rejects(
+      db.exec("update user_settings set audio_source='invalid';"),
+    );
     // Re-running the same JSON-derived seed is idempotent and preserves identities.
     for (const word of wordSeed)
       await orm

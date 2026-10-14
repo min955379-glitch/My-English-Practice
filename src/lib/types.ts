@@ -1,4 +1,5 @@
 import type { VoiceGender } from "./voices";
+import type { PracticePlan } from "./planner";
 import type { ThemeChoice } from "./theme";
 
 export type Word = {
@@ -66,6 +67,8 @@ export type Review = {
   lastMistake?: string;
 };
 export type Settings = {
+  practicePlan?: PracticePlan;
+  audioSource?: "device" | "enhanced";
   theme?: ThemeChoice;
   voiceGender?: VoiceGender; // Legacy version-1 exports may omit this.
   updatedAt?: string; // Optional only for compatibility with legacy exports.

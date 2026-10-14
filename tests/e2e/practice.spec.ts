@@ -1,3 +1,4 @@
+import { choose } from "./controls";
 import { test, expect } from "@playwright/test";
 test("landing page is accessible and has no horizontal overflow on mobile", async ({
   page,
@@ -87,9 +88,12 @@ test("phonics, dictation, reading, pronunciation and settings work", async ({
   await page.getByRole("button", { name: "Try another word" }).click();
   await expect(page.locator(".spoken-word")).toHaveText("dog");
   await page.goto("/profile");
-  await page.getByLabel("Your daily aim").selectOption("15");
+  await choose(page, "Your daily aim", "15");
   await page.reload();
-  await expect(page.getByLabel("Your daily aim")).toHaveValue("15");
+  await expect(page.getByLabel("Your daily aim")).toHaveAttribute(
+    "data-value",
+    "15",
+  );
 });
 test("health and unauthenticated API access", async ({ request }) => {
   const health = await request.get("/api/health");

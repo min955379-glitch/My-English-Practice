@@ -1,95 +1,19 @@
-import { test, expect, type Page } from "@playwright/test";
-async function fakeSpeech(page: Page) {
-  await page.addInitScript(() => {
-    const records: {
-      text: string;
-      voice: string;
-      rate: number;
-      lang: string;
-    }[] = [];
-    const names = ["Google UK English Female", "Google UK English Male"];
-    let voices = names.map((name) => ({
-      name,
-      voiceURI: name,
-      lang: "en-GB",
-      default: name.endsWith("Female"),
-      localService: true,
-    }));
-    class Utterance {
-      constructor(public text: string) {}
-      voice: { name: string } | null = null;
-      lang = "";
-      rate = 1;
-      onstart: (() => void) | null = null;
-      onend: (() => void) | null = null;
-      onerror: null = null;
-    }
-    class Synth extends EventTarget {
-      getVoices() {
-        return voices;
-      }
-      cancel() {}
-      speak(utterance: Utterance) {
-        records.push({
-          text: utterance.text,
-          voice: utterance.voice?.name ?? "",
-          rate: utterance.rate,
-          lang: utterance.lang,
-        });
-        queueMicrotask(() => {
-          utterance.onstart?.();
-          utterance.onend?.();
-        });
-      }
-    }
-    const synth = new Synth();
-    Object.defineProperty(window, "speechSynthesis", {
-      value: synth,
-      configurable: true,
-    });
-    Object.defineProperty(window, "SpeechSynthesisUtterance", {
-      value: Utterance,
-      configurable: true,
-    });
-    Object.assign(window, {
-      __spoken: records,
-      __setVoices: (next: string[]) => {
-        voices = next.map((name) => ({
-          name,
-          voiceURI: name,
-          lang: "en-GB",
-          default: true,
-          localService: true,
-        }));
-        synth.dispatchEvent(new Event("voiceschanged"));
-      },
-    });
-  });
-}
-const spoken = (page: Page) =>
-  page.evaluate(
-    () =>
-      (
-        window as unknown as Window & {
-          __spoken: {
-            text: string;
-            voice: string;
-            rate: number;
-            lang: string;
-          }[];
-        }
-      ).__spoken,
-  );
+import { choose } from "./controls";
+import { test, expect } from "@playwright/test";
+import { fakeSpeech, spoken } from "./speech";
 test("every level is selectable from a fresh visit and Level 13 can start immediately", async ({
   page,
 }) => {
   await page.goto("/session");
   const picker = page.getByLabel("Your practice level");
-  await expect(picker.locator("option")).toHaveCount(13);
-  await expect(picker.locator("option:disabled")).toHaveCount(0);
+  await picker.click();
+  await expect(page.getByRole("option")).toHaveCount(13);
+  await expect(
+    page.locator('[role="option"][aria-disabled="true"]'),
+  ).toHaveCount(0);
   for (let level = 1; level <= 13; level++) {
-    await picker.selectOption(String(level));
-    await expect(picker).toHaveValue(String(level));
+    await choose(page, "Your practice level", String(level));
+    await expect(picker).toHaveAttribute("data-value", String(level));
   }
   await page.getByRole("button", { name: "Start my practice" }).click();
   await page.getByRole("textbox").pressSequentially("as soon as possible");
@@ -132,10 +56,16 @@ test("male voice preference persists, exports and imports and is used by all pla
 }) => {
   await fakeSpeech(page);
   await page.goto("/profile");
-  await expect(page.getByLabel("Voice", { exact: true })).toHaveValue("female");
-  await page.getByLabel("Voice", { exact: true }).selectOption("male");
+  await expect(page.getByLabel("Voice", { exact: true })).toHaveAttribute(
+    "data-value",
+    "female",
+  );
+  await choose(page, "Voice", "male");
   await page.reload();
-  await expect(page.getByLabel("Voice", { exact: true })).toHaveValue("male");
+  await expect(page.getByLabel("Voice", { exact: true })).toHaveAttribute(
+    "data-value",
+    "male",
+  );
   await page.getByRole("button", { name: "Try this voice" }).click();
   expect((await spoken(page)).at(-1)?.voice).toBe("Google UK English Male");
   const download = page.waitForEvent("download");
@@ -146,13 +76,16 @@ test("male voice preference persists, exports and imports and is used by all pla
   for await (const chunk of stream!) chunks.push(chunk);
   const backup = Buffer.concat(chunks);
   expect(JSON.parse(backup.toString()).settings.voiceGender).toBe("male");
-  await page.getByLabel("Voice", { exact: true }).selectOption("female");
+  await choose(page, "Voice", "female");
   await page.locator("input[type=file]").setInputFiles({
     name: "progress.json",
     mimeType: "application/json",
     buffer: backup,
   });
-  await expect(page.getByLabel("Voice", { exact: true })).toHaveValue("male");
+  await expect(page.getByLabel("Voice", { exact: true })).toHaveAttribute(
+    "data-value",
+    "male",
+  );
   for (const path of ["/session", "/dictation"]) {
     await page.goto(path);
     await page.getByRole("button", { name: "Start my practice" }).click();
@@ -190,7 +123,7 @@ test("male voice preference persists, exports and imports and is used by all pla
     ),
   ).toBe(true);
   await page.goto("/profile");
-  await page.getByLabel("Voice", { exact: true }).selectOption("female");
+  await choose(page, "Voice", "female");
   await page.getByRole("button", { name: "Try this voice" }).click();
   expect((await spoken(page)).at(-1)?.voice).toBe("Google UK English Female");
 });
@@ -199,7 +132,7 @@ test("missing male voice uses British fallback, and delayed voice availability h
 }) => {
   await fakeSpeech(page);
   await page.goto("/profile");
-  await page.getByLabel("Voice", { exact: true }).selectOption("male");
+  await choose(page, "Voice", "male");
   await page.evaluate(() =>
     (
       window as unknown as Window & { __setVoices: (names: string[]) => void }

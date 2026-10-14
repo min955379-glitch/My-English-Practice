@@ -15,6 +15,7 @@ export function mergeSyncedSettings(
       : remote.settings;
   return {
     ...selected,
+    audioSource: selected.audioSource ?? "device",
     theme: selected.theme ?? "system",
     voiceGender: selected.voiceGender ?? "female",
   };

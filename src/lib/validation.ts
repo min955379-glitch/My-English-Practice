@@ -1,4 +1,5 @@
 import type { LearnerData } from "./types";
+import { isPracticePlan } from "./planner";
 import { isVoiceGender } from "./voices";
 import { isThemeChoice } from "./theme";
 import { wordById, levelIds } from "./curriculum";
@@ -27,6 +28,13 @@ export function isLearnerData(value: unknown): value is LearnerData {
   if (value.attempts.length > 5000 || value.sessions.length > 1000)
     return false;
   const s = value.settings;
+  if (s.practicePlan !== undefined && !isPracticePlan(s.practicePlan))
+    return false;
+  if (
+    s.audioSource !== undefined &&
+    !["device", "enhanced"].includes(s.audioSource as string)
+  )
+    return false;
   if (s.voiceGender !== undefined && !isVoiceGender(s.voiceGender))
     return false;
   if (s.updatedAt !== undefined && !date(s.updatedAt)) return false;
