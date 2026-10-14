@@ -1,0 +1,111 @@
+export const guides = [
+  {
+    id: "listen-first",
+    title: "Listen before you spell",
+    icon: "headphones" as const,
+    summary: "Start with the sound, not a guess at the letters.",
+    paragraphs: [
+      "Listen at normal speed once, then replay slowly. Say the word quietly if that helps. Notice its first sound, vowel sounds and final sound before you type.",
+      "British English has several accents. A spelling does not change just because two speakers pronounce it a little differently. Use the example sentence to understand the word.",
+    ],
+    example: "Hear → say → spell → read the meaning",
+    tips: [
+      "Use Listen slowly whenever you need it.",
+      "If your device has no suitable voice, use the written practice option.",
+      "A slower recording supports listening; it is not a different spelling.",
+    ],
+    href: "/pronunciation",
+    link: "Try listen & repeat",
+  },
+  {
+    id: "small-patterns",
+    title: "Look for a small pattern",
+    icon: "layers" as const,
+    summary: "A familiar pattern gives you a useful starting point.",
+    paragraphs: [
+      "Short words such as cat and bag use a short vowel. Compare name with a shorter vowel word to notice how a final silent e can change the sound. This is a useful pattern, not a rule without exceptions.",
+      "Two letters can represent one sound: sh in shop, ch in chair and ph in phone. A blend keeps more than one consonant sound, as in blue or train.",
+    ],
+    example: "shop · chair · phone / blue · train",
+    tips: [
+      "Practise one phonics group at a time.",
+      "Compare the sound as well as the written letters.",
+      "Come back to useful exceptions rather than treating them as failures.",
+    ],
+    href: "/phonics",
+    link: "Explore phonics",
+  },
+  {
+    id: "syllables",
+    title: "Break a longer word into parts",
+    icon: "book" as const,
+    summary: "Longer words become easier when you work with smaller chunks.",
+    paragraphs: [
+      "A syllable is a spoken beat. Listen for the stronger beat and notice the weaker syllables around it. Written chunks are a spelling aid; they do not always map perfectly to the way connected speech sounds.",
+      "Weak vowel sounds can be difficult to predict from listening alone. For words such as separate and necessary, combine the sound with careful attention to the spelling.",
+    ],
+    example: "nec-es-sar-y · ac-com-mo-da-tion",
+    tips: [
+      "Ask for syllable support after trying the word.",
+      "Look at repeated consonants deliberately.",
+      "Use a related form, such as necessary and necessity, to make a connection.",
+    ],
+    href: "/session?level=10",
+    link: "Practise longer words",
+  },
+  {
+    id: "misspellings",
+    title: "Build a personal list of tricky words",
+    icon: "repeat" as const,
+    summary:
+      "A small, relevant list is more useful than a long list you never revisit.",
+    paragraphs: [
+      "Keep words you actually need at work, when travelling or when filling in a form. Notice the specific part you find difficult: an unstressed vowel, a doubled consonant or a less predictable spelling.",
+      "Try the spelling before checking it. Reading a correct answer repeatedly is useful, but remembering it independently is a different skill.",
+    ],
+    example: "accommodation: notice both cc and mm",
+    tips: [
+      "Make the first attempt before asking for help.",
+      "Read the meaning and example after completing the word.",
+      "Use a word family where it is useful; not every word has a predictable set of related forms.",
+    ],
+    href: "/session?level=9",
+    link: "Practise common misspellings",
+  },
+  {
+    id: "review",
+    title: "Return to a word on another day",
+    icon: "calendar" as const,
+    summary: "Space your practice so recall has a chance to strengthen.",
+    paragraphs: [
+      "A word that needed help returns in the same session and enters the review schedule. Later reviews are spaced further apart after independent success. The website uses an adapted scheduling model, not a promise about how quickly everyone will learn.",
+      "All thirteen levels are open. Your review list and progress offer guidance; they never decide which level you are allowed to use.",
+    ],
+    example: "Try today → return tomorrow → revisit later",
+    tips: [
+      "A short regular session is a practical starting point.",
+      "Finish early when you need to; the practice is saved.",
+      "A planner tick is your own checklist, not a mastery measurement.",
+    ],
+    href: "/planner",
+    link: "Make a weekly plan",
+  },
+  {
+    id: "use-it",
+    title: "Put the word into a sentence",
+    icon: "mic" as const,
+    summary: "Connect careful spelling with useful everyday communication.",
+    paragraphs: [
+      "Read the example aloud, then practise a phrase or a sentence. Notice the spaces as well as the letters. Dictation is useful for a request, an appointment or a workplace message.",
+      "Optional microphone recognition shows what a browser heard. It is not a pronunciation grade, and a recognition error does not mean you spoke badly.",
+    ],
+    example: "Please confirm the accommodation arrangements",
+    tips: [
+      "Choose a phrase that feels useful to you.",
+      "Repeat a reading passage at a comfortable pace.",
+      "Microphone use is optional; listening and written practice still work without it.",
+    ],
+    href: "/dictation",
+    link: "Try sentence dictation",
+  },
+];

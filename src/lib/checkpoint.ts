@@ -83,3 +83,54 @@ export function recoverCheckpoint(
     return data;
   }
 }
+
+const settingsKey = (scope: string) =>
+  `english-practice-settings-pending:${scope}`;
+export function stageSettingsCheckpoint(
+  data: LearnerData,
+  scope: string,
+): () => void {
+  if (typeof localStorage === "undefined") return () => {};
+  try {
+    const raw = JSON.stringify(data.settings);
+    localStorage.setItem(settingsKey(scope), raw);
+    return () => {
+      try {
+        if (localStorage.getItem(settingsKey(scope)) === raw)
+          localStorage.removeItem(settingsKey(scope));
+      } catch {}
+    };
+  } catch {
+    return () => {};
+  }
+}
+export function restoreSettingsCheckpoint(
+  data: LearnerData,
+  raw: string | null,
+): LearnerData {
+  if (!raw) return data;
+  try {
+    const settings = JSON.parse(raw);
+    const candidate = { ...data, settings };
+    if (!isLearnerData(candidate)) return data;
+    const cached = Date.parse(settings.updatedAt ?? "") || 0,
+      disk = Date.parse(data.settings.updatedAt ?? "") || 0;
+    return cached >= disk ? candidate : data;
+  } catch {
+    return data;
+  }
+}
+export function recoverSettingsCheckpoint(
+  data: LearnerData,
+  scope: string,
+): LearnerData {
+  if (typeof localStorage === "undefined") return data;
+  try {
+    return restoreSettingsCheckpoint(
+      data,
+      localStorage.getItem(settingsKey(scope)),
+    );
+  } catch {
+    return data;
+  }
+}

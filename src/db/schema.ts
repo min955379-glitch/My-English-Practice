@@ -210,6 +210,9 @@ export const userSettings = pgTable(
     userId: uuid("user_id")
       .primaryKey()
       .references(() => users.id, { onDelete: "cascade" }),
+    audioSource: varchar("audio_source", { length: 10 })
+      .notNull()
+      .default("device"),
     voiceGender: varchar("voice_gender", { length: 6 })
       .notNull()
       .default("female"),
@@ -222,6 +225,10 @@ export const userSettings = pgTable(
     ...timestamps(),
   },
   (table) => [
+    check(
+      "settings_audio_source",
+      sql`${table.audioSource} in ('device', 'enhanced')`,
+    ),
     check(
       "settings_voice_gender",
       sql`${table.voiceGender} in ('female', 'male')`,
