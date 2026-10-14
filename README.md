@@ -8,7 +8,7 @@ Repository: [min955379-glitch/My-English-Practice](https://github.com/min955379-
 
 The website now has working on-device learning flows, rather than page skeletons:
 
-- Listen-and-spell with normal and slow browser speech, immediate wrong-letter feedback, blocking, case-insensitive input, backspace and paste prevention.
+- Listen-and-spell with normal and slow device speech, plus optional consent-based enhanced British audio, immediate wrong-letter feedback, blocking, case-insensitive input, backspace and paste prevention.
 - An explicitly requested hint ladder after two incorrect letters: slow replay, first-letter support and syllable breaking.
 - Same-session mistake retries, next-day review and the adapted FSRS-style scheduling rules in `ARCHITECTURE.md`.
 - Mastery requiring independent success on separate days, including a long review interval.
@@ -17,6 +17,9 @@ The website now has working on-device learning flows, rather than page skeletons
 - A dashboard calculated from actual saved attempts and sessions, not demonstration metrics.
 - IndexedDB progress, per-letter checkpoints, session resume, offline operation of the loaded drill and production service-worker caching.
 - System/Light/Dark themes and Female/Male British English playback preferences, saved with progress export/import and existing-session cloud sync. Sign-in/sign-up forms and entry points are removed.
+- Midnight blue/violet visual system, gradient headings, subtle finite animations, a distinct settings gear and icon-only header theme toggle.
+- Custom themed, keyboard-accessible selectors on mobile and desktop; immediate-reload checkpoints for preferences and planner edits.
+- Searchable learning hub, six practical study guides and a saved weekly planner. Planner ticks never earn mastery or alter review dates.
 - About, Contact, Help and Accessibility, Privacy and Terms pages; no ads or tracking SDKs.
 
 ## Why it exists
@@ -67,7 +70,9 @@ TypeScript 7 supplies `tsc` through the `@typescript/native` npm alias. The offi
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Public Supabase publishable client key |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supported alternative to the publishable key |
 | `SUPABASE_SERVICE_ROLE_KEY` | Optional server-only admin key for permanent account deletion |
-| `NEXT_PUBLIC_SITE_URL` | Optional public deployment origin for sitemap generation |
+| `NEXT_PUBLIC_SITE_URL` | Canonical public origin for sitemap and speech-origin validation behind a reverse proxy; set when enabling enhanced audio |
+| `AZURE_SPEECH_KEY` | Optional server-only Azure Speech resource key |
+| `AZURE_SPEECH_REGION` | Optional Azure resource region, for example `uksouth` |
 | `ALLOW_PREVIEW_EMBEDDING` | Set to `1` only for an embedded sandbox preview; leave unset for normal public deployment |
 
 Never put server secrets in `NEXT_PUBLIC_` variables. Keep `.env.local` out of version control. Use the TLS settings required by your database provider; the application does not disable certificate validation.
@@ -140,7 +145,7 @@ Advertising is not enabled. Public information pages and `ads.txt` state the act
 
 Automated learning tests, embedded PostgreSQL migration/RLS tests, Chromium browser tests, lint and strict type checking pass. Production builds pass. Automated accessibility checks report no violations on the tested pages and mobile wrong-letter state; this is not independent certification.
 
-An earlier, pre-theme-extension local mobile Lighthouse run measured Performance 92, Accessibility 100, Best Practices 96 and SEO 100 on the home page. LCP was 2.6 seconds and CLS was zero. Results vary by deployment and device; the architecture's sub-2.5-second LCP target still needs a deployed audit.
+An earlier, pre-redesign local mobile Lighthouse run measured Performance 92, Accessibility 100, Best Practices 96 and SEO 100 on the home page. LCP was 2.6 seconds and CLS was zero. Results vary by deployment and device; the architecture's sub-2.5-second LCP target still needs a deployed audit.
 
 No live Supabase credentials or hosting account are available in this workspace. Hosted authentication, cloud sync, permanent account deletion, real microphone recognition and public deployment have not been end-to-end verified. The source has not been pushed to GitHub by this build.
 
@@ -167,3 +172,22 @@ New and read-normalised settings default to Female; legacy exports may omit voic
 A small account-scoped, transient browser-storage checkpoint protects unfinished letter drafts during an immediate reload while IndexedDB writes complete. It never advances a session queue or changes attempts/reviews. Successful commits clear the checkpoint.
 
 Current validation: lint, typecheck and production build pass; 29 unit/database tests and 42 production browser tests pass. Device speech is mocked in deterministic browser tests to assert the actual selected voice and playback rate across drills, dictation, pronunciation and reading. Listen manually on the target device for voice quality. See `validation/RESULTS.md` and the `open-levels-voices-*` logs for details.
+
+## Midnight studio redesign
+
+New routes: `/learn`, `/guides` and `/planner`. `/session?level=13` and `/pronunciation?level=13` open that level directly; invalid levels fall back safely. System theme remains available in Settings even though the header uses only a sun/moon icon.
+
+Current release validation: 40 unit/database/API tests and 56 Chromium browser tests passed, plus eight repeated immediate-reload planner checks. The browser suite includes axe checks on sixteen pages in both themes, mobile open-menu accessibility, saved voice/daily aim, offline practice, keyboard menus, deep links, audio consent and quota fallback. These are automated Chromium/mobile-viewport checks, not physical Android or iOS certification. See `validation/RESULTS.md`.
+
+### Optional reliable named British audio
+
+Device speech cannot install a missing male voice. The optional server adapter explicitly requests **en-GB-RyanNeural (male)** or **en-GB-SoniaNeural (female)**; it does not imitate a male voice by changing pitch.
+
+1. An operator must create a supported **Azure Speech F0 (free-tier)** resource and confirm its region, availability and current quota. Do not select a paid tier if you require zero paid usage. Check [Microsoft's official pricing](https://azure.microsoft.com/en-us/pricing/details/speech/) and [voice documentation](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support). A third-party resource/account is needed; learners still need no account in this application.
+2. Set server-only `AZURE_SPEECH_KEY` and `AZURE_SPEECH_REGION`; never expose the key as `NEXT_PUBLIC_`. Set `NEXT_PUBLIC_SITE_URL` to the exact HTTPS deployment origin for reverse-proxy origin checks. Restart/redeploy; refresh the browser.
+3. In Settings, grant permission to send listed lesson text to Microsoft in **this browser**, choose **Enhanced British audio**, then choose Female or Male and use **Try this voice**. Permission is not included in backups or cloud sync.
+4. Apply `0003_enhanced_audio.sql` through the normal migration runner if using the existing cloud-sync database. Guest mode requires no database. The migration adds `audio_source`; the planner is stored in the existing settings snapshot.
+
+The app sends only allowlisted curriculum, reading, phonics and instruction text—not typed answers, private notes, microphone audio or recordings. It caches up to 32 clips and limits requests to 30 per minute per IP and 10,000 characters per day **per server instance**. For multi-instance public hosting, use a shared limiter or enforce resource quotas; the in-memory guard is not a global billing guarantee. Provider quota, configuration or network failures fall back visibly to device speech.
+
+**No Azure credentials were supplied, no resource was created, and real Azure audio was not called or listened to during this build.** Provider requests/playback and failures were tested with mocks. The live workspace preview intentionally reports enhancement as unconfigured; a named male voice is therefore not guaranteed on a device without an installed male voice until the operator completes the setup above. Physical-device playback and production hosting remain release checks.
