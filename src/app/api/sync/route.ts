@@ -177,6 +177,7 @@ export async function POST(request: Request) {
           spokenInstructions: result.settings.spokenInstructions,
           theme: result.settings.theme ?? "system",
           voiceGender: result.settings.voiceGender ?? "female",
+          audioSource: result.settings.audioSource ?? "device",
         })
         .onConflictDoUpdate({
           target: userSettings.userId,
@@ -186,6 +187,7 @@ export async function POST(request: Request) {
             spokenInstructions: result.settings.spokenInstructions,
             theme: result.settings.theme ?? "system",
             voiceGender: result.settings.voiceGender ?? "female",
+            audioSource: result.settings.audioSource ?? "device",
           },
         });
       for (const review of Object.values(reviews)) {

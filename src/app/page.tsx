@@ -81,6 +81,11 @@ export default function HomePage() {
             <div className="preview-audio">
               <Icon name="volume" width={29} height={29} />
             </div>
+            <div className="sound-wave" aria-hidden="true">
+              {Array.from({ length: 9 }, (_, i) => (
+                <span key={i} />
+              ))}
+            </div>
             <h2>Listen. Take your time.</h2>
             <p>A familiar word, one letter at a time.</p>
             <div
@@ -135,6 +140,47 @@ export default function HomePage() {
           </span>
         </div>
       </div>
+      <section
+        className="page-container home-resources"
+        aria-label="Your practice toolkit"
+      >
+        <div className="studio-strip">
+          <div className="studio-stat">
+            <Icon name="layers" width={28} />
+            <div>
+              <strong>{levels.length}</strong>
+              <span>open learning levels</span>
+            </div>
+          </div>
+          <div className="studio-stat">
+            <Icon name="book" width={28} />
+            <div>
+              <strong>{words.length}</strong>
+              <span>words, phrases & sentences</span>
+            </div>
+          </div>
+          <div className="studio-stat">
+            <Icon name="headphones" width={28} />
+            <div>
+              <strong>en-GB</strong>
+              <span>British English throughout</span>
+            </div>
+          </div>
+        </div>
+        <div className="resource-banner">
+          <div>
+            <p className="eyebrow">More than a daily exercise</p>
+            <h2>A learning space that works around you.</h2>
+            <p>
+              Find a level, understand a spelling strategy, and make a plan for
+              your week.
+            </p>
+          </div>
+          <Link href="/learn" className="button button-primary">
+            Explore your learning hub <Icon name="arrow" />
+          </Link>
+        </div>
+      </section>
       <section className="page-container home-section">
         <div className="section-heading section-heading-large">
           <div>
@@ -190,8 +236,8 @@ export default function HomePage() {
         </div>
         <p className="path-note">
           <Icon name="book" width={16} />
-          Start where you are. New levels open as your spelling becomes more
-          confident.
+          All 13 levels are open. Start where you are, and choose what feels
+          useful.
         </p>
       </section>
       <section className="page-container">
@@ -205,6 +251,14 @@ export default function HomePage() {
             </p>
           </div>
           <div className="other-links">
+            <Link href="/guides">
+              <Icon name="layers" />
+              Study guides <Icon name="arrow" />
+            </Link>
+            <Link href="/planner">
+              <Icon name="calendar" />
+              My weekly plan <Icon name="arrow" />
+            </Link>
             <Link href="/pronunciation">
               <Icon name="mic" />
               Listen & repeat <Icon name="arrow" />

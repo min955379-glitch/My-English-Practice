@@ -1,6 +1,9 @@
-const CACHE = "english-practice-public-v3";
+const CACHE = "english-practice-public-v4";
 const PAGES = [
   "/",
+  "/learn",
+  "/guides",
+  "/planner",
   "/session",
   "/dashboard",
   "/phonics",
