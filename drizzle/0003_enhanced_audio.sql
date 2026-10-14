@@ -1,0 +1,2 @@
+ALTER TABLE "user_settings" ADD COLUMN "audio_source" varchar(10) DEFAULT 'device' NOT NULL;--> statement-breakpoint
+ALTER TABLE "user_settings" ADD CONSTRAINT "settings_audio_source" CHECK ("user_settings"."audio_source" in ('device', 'enhanced'));
