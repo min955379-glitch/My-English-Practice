@@ -12,11 +12,11 @@ The website now has working on-device learning flows, rather than page skeletons
 - An explicitly requested hint ladder after two incorrect letters: slow replay, first-letter support and syllable breaking.
 - Same-session mistake retries, next-day review and the adapted FSRS-style scheduling rules in `ARCHITECTURE.md`.
 - Mastery requiring independent success on separate days, including a long review interval.
-- Forty-three curated practice items across eight PRD-defined levels, including everyday dictation phrases.
+- 408 practice items across thirteen fully open levels: the previous 83 items plus 25 new items per level, using British spelling. Levels 1–7 contain 30 items each; Levels 8–13 contain 33 each.
 - Phonics and word-family information, syllable stress, listen-and-repeat, optional microphone transcription and short reading-aloud passages.
 - A dashboard calculated from actual saved attempts and sessions, not demonstration metrics.
 - IndexedDB progress, per-letter checkpoints, session resume, offline operation of the loaded drill and production service-worker caching.
-- Preferences, progress export/import, local reset and optional Supabase accounts/cloud sync.
+- System/Light/Dark themes and Female/Male British English playback preferences, saved with progress export/import and existing-session cloud sync. Sign-in/sign-up forms and entry points are removed.
 - About, Contact, Help and Accessibility, Privacy and Terms pages; no ads or tracking SDKs.
 
 ## Why it exists
@@ -87,7 +87,7 @@ The schema includes application identities, profiles, settings, levels, phonics 
 
 Cloud sync verifies the bearer token through Supabase Auth, sets transaction-local identity claims and switches the PostgreSQL transaction to the non-bypass `authenticated` role. The migration includes table grants and ownership RLS policies. The server never trusts a client-provided owner ID. The configured database connection must be permitted to set that role.
 
-Accounts and guest practice use separate browser stores. Export guest progress before signing in if you want to import it into an account. Signing out does not expose the account's data in the guest dashboard.
+Guest and existing authenticated sessions use separate browser stores. This application no longer provides login, sign-up or registration screens or forms. Existing sessions retain sync, sign-out and deletion controls; authentication APIs are not exposed through new UI entry points. All practice and settings work without an account.
 
 ## Review rules
 
@@ -100,13 +100,13 @@ The checked-in architecture specifies a simplified FSRS-style model, not the ref
 - Three independent successes on different local dates, including a review after at least seven days, are needed for mastery.
 - A new error removes mastery.
 
-Same-session retries are a separate queue, limited to two reinsertion cycles per word to avoid an endless session. Unresolved items remain in the next-day review path. Level unlocks require three qualifying sessions on separate dates, including a recent session. Optional pronunciation and dictation previews do not unlock the spelling curriculum.
+Same-session retries are a separate queue, limited to two reinsertion cycles per word to avoid an endless session. Unresolved items remain in the next-day review path. All levels are selectable from the first visit, regardless of attempts, accuracy or account status. Unlock fields remain in the seed/schema only for compatibility; no learning rule gates access. Reviews from any level are eligible on their scheduled date.
 
 See `IMPLEMENTATION.md` for documented interpretations of contradictory requirements.
 
 ## Browser audio and microphone
 
-The website requests British English voices and clearly labels a standard-English fallback. Device voices may be unavailable or may depend on a network connection. Written assisted practice remains available if audio cannot play.
+Settings offers Voice: Female / Male (default Female). All playback uses the same preference-aware British English voice selector. Explicit Google UK Female/Male labels and known Microsoft/Apple British voice names are recognised. If the requested named gender is unavailable, the best installed en-GB voice is used; a clearly labelled standard-English fallback is used only if no en-GB voice exists. Web Speech provides no standard gender metadata, so unknown voice names are not guessed. Device voices may be unavailable or may depend on a network connection. Written assisted practice remains available if audio cannot play.
 
 Microphone recognition starts only after consent and a button press. The browser provider may process speech remotely. This website does not save recordings or transcripts. Feedback is “I heard”, never a pronunciation grade. Real-device permissions and voice quality require manual testing.
 
@@ -140,8 +140,30 @@ Advertising is not enabled. Public information pages and `ads.txt` state the act
 
 Automated learning tests, embedded PostgreSQL migration/RLS tests, Chromium browser tests, lint and strict type checking pass. Production builds pass. Automated accessibility checks report no violations on the tested pages and mobile wrong-letter state; this is not independent certification.
 
-A local mobile Lighthouse run measured Performance 92, Accessibility 100, Best Practices 96 and SEO 100 on the home page. LCP was 2.6 seconds and CLS was zero. Results vary by deployment and device; the architecture's sub-2.5-second LCP target still needs a deployed audit.
+An earlier, pre-theme-extension local mobile Lighthouse run measured Performance 92, Accessibility 100, Best Practices 96 and SEO 100 on the home page. LCP was 2.6 seconds and CLS was zero. Results vary by deployment and device; the architecture's sub-2.5-second LCP target still needs a deployed audit.
 
 No live Supabase credentials or hosting account are available in this workspace. Hosted authentication, cloud sync, permanent account deletion, real microphone recognition and public deployment have not been end-to-end verified. The source has not been pushed to GitHub by this build.
 
 See `ROADMAP.md` for checked implementation work and remaining release gates.
+
+## Theme and advanced curriculum update
+
+`src/content/curriculum.json` is the shared UI/Drizzle seed source: 13 levels, 408 practice items and 24 patterns. Levels 1–7 contain 30 items each and Levels 8–13 contain 33 each, including necessary, embarrass, accommodation, conscience, rhythm and questionnaire. Level 13 adds longer formal phrases and sentences. Pronunciation lists every level; dictation discovers phrase/sentence levels from the data.
+
+Apply `drizzle/0001_advanced_levels_theme.sql` using the existing migration runner before re-running `npm run db:seed`. It widens the levels check to 1–13 and adds the constrained System/Light/Dark preference. Historical migration 0000 is unchanged. Drizzle journal and snapshot 0001 are checked in.
+
+The theme defaults to System. The header cycles System → Light → Dark; Settings offers the same choices. IndexedDB settings are canonical, with a synchronous localStorage mirror used by the root head script before first paint. System observes OS changes; explicit selections do not. Legacy exports without a theme import as System. New preference edits carry a timestamp so cloud merge restores the latest settings, including theme edits made before any drills. Existing authenticated-session restoration, reconnect, session-finish and manual sync triggers remain; there is no sign-in/sign-up UI.
+
+Semantic text colours pass the automated WCAG AA checks in both palettes. `@custom-variant dark` targets the root `.dark` class, not only the OS media query. Muted text is intentionally darker than the original light palette's decorative slate so ordinary text meets AA. This automated coverage is not a substitute for an independent accessibility audit.
+
+## Open levels, larger curriculum and voice choice
+
+The latest explicit requirements supersede the original PRD's unlock rules. Level access is unconditional; the compatibility `unlockedLevel` helper returns the highest curriculum ID without inspecting progress. Dashboard completion and accuracy, attempt recording and adapted FSRS-style scheduling remain unchanged. The shared review queue no longer filters out content on the basis of a lock.
+
+Apply `drizzle/0002_voice_choice.sql` through the existing migration runner before syncing the new settings, then run the shared idempotent database seed. The migration adds a constrained `voice_gender` column with default `female`; snapshot 0002 and the journal are included. All 325 new items come from the same JSON as the app and seed. The prior 83 records and all 24 pattern definitions are preserved.
+
+New and read-normalised settings default to Female; legacy exports may omit voiceGender. New exports include it, importing restores all exported preferences, and existing cloud backup merge persists it with the preference timestamp. Old `preferredVoice` URIs remain compatible but cannot override a matching requested-gender British voice.
+
+A small account-scoped, transient browser-storage checkpoint protects unfinished letter drafts during an immediate reload while IndexedDB writes complete. It never advances a session queue or changes attempts/reviews. Successful commits clear the checkpoint.
+
+Current validation: lint, typecheck and production build pass; 29 unit/database tests and 42 production browser tests pass. Device speech is mocked in deterministic browser tests to assert the actual selected voice and playback rate across drills, dictation, pronunciation and reading. Listen manually on the target device for voice quality. See `validation/RESULTS.md` and the `open-levels-voices-*` logs for details.

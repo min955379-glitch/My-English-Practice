@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Icon, type IconName } from "@/components/ui/Icon";
-import { shortLevelName } from "@/lib/curriculum";
+import { shortLevelName, levels, words } from "@/lib/curriculum";
 const features: {
   icon: IconName;
   title: string;
@@ -169,28 +169,21 @@ export default function HomePage() {
             <p className="eyebrow">Your learning path</p>
             <h2>From small words to everyday conversations.</h2>
           </div>
-          <span className="outlined-badge">8 gentle levels</span>
+          <span className="outlined-badge">{levels.length} gentle levels</span>
         </div>
         <div className="path-grid">
-          {Array.from({ length: 8 }, (_, i) => (
-            <div className="path-card" key={i}>
+          {levels.map((level) => (
+            <div className="path-card" key={level.id}>
               <span className="path-number">
-                {String(i + 1).padStart(2, "0")}
+                {String(level.id).padStart(2, "0")}
               </span>
-              <h3>{shortLevelName(i + 1)}</h3>
+              <h3>{shortLevelName(level.id)}</h3>
               <p>
-                {
-                  [
-                    "cat · dog · sun",
-                    "name · time · home",
-                    "letter · dinner · office",
-                    "ship · chair · think",
-                    "black · train · cloud",
-                    "table · garden · hotel",
-                    "knife · answer · business",
-                    "Everyday phrases",
-                  ][i]
-                }
+                {words
+                  .filter((word) => word.level === level.id)
+                  .slice(0, 3)
+                  .map((word) => word.text)
+                  .join(" · ")}
               </p>
             </div>
           ))}

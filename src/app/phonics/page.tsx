@@ -35,6 +35,16 @@ const groups = [
     categories: ["two_syllables", "silent_letter", "irregular"],
   },
 ];
+const listed = new Set(groups.flatMap((group) => group.categories));
+const advanced = patterns.filter(
+  (pattern) =>
+    !listed.has(pattern.category) &&
+    !["dictation", "advanced_dictation"].includes(pattern.category),
+);
+groups.push({
+  title: "Advanced spelling patterns",
+  categories: advanced.map((pattern) => pattern.category),
+});
 const titles: Record<string, string> = {
   short_cvc: "Short vowels",
   silent_e: "The quiet final e",
@@ -119,7 +129,7 @@ export default function PhonicsPage() {
                           .replace("blend_", "")
                           .replaceAll("_", " ")}
                   </span>
-                  <h3>{titles[category]}</h3>
+                  <h3>{titles[category] ?? category.replaceAll("_", " ")}</h3>
                   <p>{pattern.description}</p>
                   <div className="example-words">
                     {examples.map((example) => (

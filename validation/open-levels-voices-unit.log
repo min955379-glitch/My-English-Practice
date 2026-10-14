@@ -1,0 +1,188 @@
+
+> my-english-practice@0.1.0 test
+> node --import tsx --test tests/*.test.ts
+
+TAP version 13
+# Subtest: 13 complete levels, 408 items and 24 recognised patterns
+ok 1 - 13 complete levels, 408 items and 24 recognised patterns
+  ---
+  duration_ms: 3.693392
+  type: 'test'
+  ...
+# Subtest: all levels stay open regardless of existing session history
+ok 2 - all levels stay open regardless of existing session history
+  ---
+  duration_ms: 26.928427
+  type: 'test'
+  ...
+# Subtest: same-day repetition and low accuracy never restrict level access
+ok 3 - same-day repetition and low accuracy never restrict level access
+  ---
+  duration_ms: 0.903936
+  type: 'test'
+  ...
+# Subtest: legacy exports work, advanced sessions import, invalid themes and level 14 fail
+ok 4 - legacy exports work, advanced sessions import, invalid themes and level 14 fail
+  ---
+  duration_ms: 1.298432
+  type: 'test'
+  ...
+# Subtest: prepaint theme respects choice, OS, invalid choice and unavailable storage
+ok 5 - prepaint theme respects choice, OS, invalid choice and unavailable storage
+  ---
+  duration_ms: 4.38431
+  type: 'test'
+  ...
+# Subtest: cloud theme round trip prefers latest edit even without attempts and handles legacy
+ok 6 - cloud theme round trip prefers latest edit even without attempts and handles legacy
+  ---
+  duration_ms: 0.642826
+  type: 'test'
+  ...
+# Subtest: migrations enforce cross-user RLS and session ownership
+ok 7 - migrations enforce cross-user RLS and session ownership
+  ---
+  duration_ms: 3796.370518
+  type: 'test'
+  ...
+# Subtest: curriculum has at least five items for each level
+ok 8 - curriculum has at least five items for each level
+  ---
+  duration_ms: 1.676001
+  type: 'test'
+  ...
+# Subtest: mistakes return tomorrow with one-day interval
+ok 9 - mistakes return tomorrow with one-day interval
+  ---
+  duration_ms: 16.857221
+  type: 'test'
+  ...
+# Subtest: same-day success cannot create mastery
+ok 10 - same-day success cannot create mastery
+  ---
+  duration_ms: 1.757681
+  type: 'test'
+  ...
+# Subtest: separate days and a long interval earn mastery
+ok 11 - separate days and a long interval earn mastery
+  ---
+  duration_ms: 1.088906
+  type: 'test'
+  ...
+# Subtest: new mistake removes mastery
+ok 12 - new mistake removes mastery
+  ---
+  duration_ms: 0.804822
+  type: 'test'
+  ...
+# Subtest: assisted retries do not inflate accuracy
+ok 13 - assisted retries do not inflate accuracy
+  ---
+  duration_ms: 1.584883
+  type: 'test'
+  ...
+# Subtest: due words are selected even before their exact time today
+ok 14 - due words are selected even before their exact time today
+  ---
+  duration_ms: 0.974099
+  type: 'test'
+  ...
+# Subtest: new learner can access every level
+ok 15 - new learner can access every level
+  ---
+  duration_ms: 0.293648
+  type: 'test'
+  ...
+# Subtest: invalid imported data is rejected
+ok 16 - invalid imported data is rejected
+  ---
+  duration_ms: 1.859674
+  type: 'test'
+  ...
+# Subtest: due reviews from any level are eligible without an access gate
+ok 17 - due reviews from any level are eligible without an access gate
+  ---
+  duration_ms: 1.041283
+  type: 'test'
+  ...
+# Subtest: Google UK female and male voices are selected rather than opposite gender or US default
+ok 18 - Google UK female and male voices are selected rather than opposite gender or US default
+  ---
+  duration_ms: 1.624467
+  type: 'test'
+  ...
+# Subtest: named Microsoft British male and female voices, mixed-case tags and underscore tags work
+ok 19 - named Microsoft British male and female voices, mixed-case tags and underscore tags work
+  ---
+  duration_ms: 0.62015
+  type: 'test'
+  ...
+# Subtest: British Apple voices are recognised and unknown voices are not guessed
+ok 20 - British Apple voices are recognised and unknown voices are not guessed
+  ---
+  duration_ms: 0.160097
+  type: 'test'
+  ...
+# Subtest: missing gender falls back to best British voice and gives a clear message
+ok 21 - missing gender falls back to best British voice and gives a clear message
+  ---
+  duration_ms: 0.456467
+  type: 'test'
+  ...
+# Subtest: legacy preferred URI cannot override a matching requested gender
+ok 22 - legacy preferred URI cannot override a matching requested gender
+  ---
+  duration_ms: 0.205775
+  type: 'test'
+  ...
+# Subtest: without British voices use labelled English fallback; without English do not crash
+ok 23 - without British voices use labelled English fallback; without English do not crash
+  ---
+  duration_ms: 0.154667
+  type: 'test'
+  ...
+# Subtest: voice preference exports/imports, rejects invalid values and remains legacy-compatible
+ok 24 - voice preference exports/imports, rejects invalid values and remains legacy-compatible
+  ---
+  duration_ms: 17.196393
+  type: 'test'
+  ...
+# Subtest: voice sync chooses latest edit without attempts and normalises legacy snapshots
+ok 25 - voice sync chooses latest edit without attempts and normalises legacy snapshots
+  ---
+  duration_ms: 0.499916
+  type: 'test'
+  ...
+# Subtest: all 13 levels are available for guest and account-shaped data without attempts
+ok 26 - all 13 levels are available for guest and account-shaped data without attempts
+  ---
+  duration_ms: 0.709677
+  type: 'test'
+  ...
+# Subtest: curriculum has precisely 25 additions to each original level with complete unique metadata
+ok 27 - curriculum has precisely 25 additions to each original level with complete unique metadata
+  ---
+  duration_ms: 3.536855
+  type: 'test'
+  ...
+# Subtest: all speech construction remains in the shared preference-aware hook
+ok 28 - all speech construction remains in the shared preference-aware hook
+  ---
+  duration_ms: 0.555885
+  type: 'test'
+  ...
+# Subtest: draft checkpoint restores letters without changing attempts, reviews or level access
+ok 29 - draft checkpoint restores letters without changing attempts, reviews or level access
+  ---
+  duration_ms: 4.760417
+  type: 'test'
+  ...
+1..29
+# tests 29
+# suites 0
+# pass 29
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5255.433404

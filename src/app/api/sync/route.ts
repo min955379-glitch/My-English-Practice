@@ -14,6 +14,8 @@ import {
 import { authenticatedUser } from "@/lib/server-auth";
 import { isLearnerData } from "@/lib/validation";
 import type { LearnerData } from "@/lib/types";
+import { mergeSyncedSettings } from "@/lib/sync-settings";
+import { levels as curriculumLevels } from "@/lib/curriculum";
 import { scheduleReview } from "@/lib/learning";
 
 export async function POST(request: Request) {
@@ -72,22 +74,20 @@ export async function POST(request: Request) {
           ]),
         ).values(),
       ];
+      const settings = mergeSyncedSettings(payload, existing ?? undefined);
       const reviews: LearnerData["reviews"] = {};
       for (const attempt of mergedAttempts)
         reviews[attempt.wordId] = scheduleReview(
           reviews[attempt.wordId],
           attempt,
-          payload.settings.timezone,
+          settings.timezone,
         );
       const result: LearnerData = {
         version: 1,
         attempts: mergedAttempts,
         sessions: mergedSessions,
         reviews,
-        settings:
-          payload.attempts.length === 0 && existing
-            ? existing.settings
-            : payload.settings,
+        settings,
       };
       const content = await tx.select().from(words);
       const contentIds = new Map(
@@ -158,30 +158,34 @@ export async function POST(request: Request) {
         .insert(profiles)
         .values({
           userId: user.id,
-          dailyTargetMinutes: payload.settings.dailyTargetMinutes,
-          preferredVoice: payload.settings.preferredVoice,
+          dailyTargetMinutes: result.settings.dailyTargetMinutes,
+          preferredVoice: result.settings.preferredVoice,
         })
         .onConflictDoUpdate({
           target: profiles.userId,
           set: {
-            dailyTargetMinutes: payload.settings.dailyTargetMinutes,
-            preferredVoice: payload.settings.preferredVoice,
+            dailyTargetMinutes: result.settings.dailyTargetMinutes,
+            preferredVoice: result.settings.preferredVoice,
           },
         });
       await tx
         .insert(userSettings)
         .values({
           userId: user.id,
-          timezone: payload.settings.timezone,
-          slowSpeechRate: payload.settings.slowRate,
-          spokenInstructions: payload.settings.spokenInstructions,
+          timezone: result.settings.timezone,
+          slowSpeechRate: result.settings.slowRate,
+          spokenInstructions: result.settings.spokenInstructions,
+          theme: result.settings.theme ?? "system",
+          voiceGender: result.settings.voiceGender ?? "female",
         })
         .onConflictDoUpdate({
           target: userSettings.userId,
           set: {
-            timezone: payload.settings.timezone,
-            slowSpeechRate: payload.settings.slowRate,
-            spokenInstructions: payload.settings.spokenInstructions,
+            timezone: result.settings.timezone,
+            slowSpeechRate: result.settings.slowRate,
+            spokenInstructions: result.settings.spokenInstructions,
+            theme: result.settings.theme ?? "system",
+            voiceGender: result.settings.voiceGender ?? "female",
           },
         });
       for (const review of Object.values(reviews)) {
@@ -204,7 +208,7 @@ export async function POST(request: Request) {
             set: fields,
           });
       }
-      for (let levelId = 1; levelId <= 8; levelId++) {
+      for (const { id: levelId } of curriculumLevels) {
         const levelContent = content.filter((w) => w.level === levelId);
         const localIds = new Set(
           levelContent.map((w) => `${w.level}:${w.text}`),

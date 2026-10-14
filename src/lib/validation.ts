@@ -1,5 +1,7 @@
 import type { LearnerData } from "./types";
-import { wordById } from "./curriculum";
+import { isVoiceGender } from "./voices";
+import { isThemeChoice } from "./theme";
+import { wordById, levelIds } from "./curriculum";
 const record = (value: unknown): value is Record<string, unknown> =>
   Boolean(value) && typeof value === "object" && !Array.isArray(value);
 const date = (value: unknown) =>
@@ -25,6 +27,10 @@ export function isLearnerData(value: unknown): value is LearnerData {
   if (value.attempts.length > 5000 || value.sessions.length > 1000)
     return false;
   const s = value.settings;
+  if (s.voiceGender !== undefined && !isVoiceGender(s.voiceGender))
+    return false;
+  if (s.updatedAt !== undefined && !date(s.updatedAt)) return false;
+  if (s.theme !== undefined && !isThemeChoice(s.theme)) return false;
   if (
     !number(s.dailyTargetMinutes, 15, 25) ||
     !number(s.slowRate, 0.6, 0.75) ||
@@ -47,7 +53,8 @@ export function isLearnerData(value: unknown): value is LearnerData {
       !date(session.startedAt) ||
       (session.endedAt !== undefined && !date(session.endedAt)) ||
       !number(session.durationSeconds) ||
-      !number(session.level, 1, 8) ||
+      !Number.isInteger(session.level) ||
+      !levelIds.has(session.level as number) ||
       !Array.isArray(session.wordIds) ||
       session.wordIds.length > 1000 ||
       !session.wordIds.every(

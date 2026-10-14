@@ -1,44 +1,21 @@
 "use client";
 import { useRef, useState } from "react";
 import { usePractice } from "@/components/PracticeProvider";
-import { supabase, cloudConfigured } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
 import { emptyData } from "@/lib/storage";
 import { isLearnerData } from "@/lib/validation";
 import { useSpeech } from "@/hooks/useSpeech";
+import type { ThemeChoice } from "@/lib/theme";
+import type { VoiceGender } from "@/lib/voices";
 import { Icon } from "@/components/ui/Icon";
 export default function ProfilePage() {
   const { data, ready, update, user, online, sync, syncState, storageError } =
     usePractice();
   const speech = useSpeech();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
   const [confirm, setConfirm] = useState(false);
-  const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
   const file = useRef<HTMLInputElement>(null);
-  const authenticate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!supabase || busy) return;
-    setBusy(true);
-    setMessage("");
-    try {
-      const result =
-        authMode === "signin"
-          ? await supabase.auth.signInWithPassword({ email, password })
-          : await supabase.auth.signUp({ email, password });
-      setMessage(
-        result.error
-          ? result.error.message
-          : authMode === "signup"
-            ? "Check your email if confirmation is required. Your on-device practice remains separate from account practice."
-            : "You are signed in. Use Sync now to retrieve your account progress.",
-      );
-      setPassword("");
-    } finally {
-      setBusy(false);
-    }
-  };
   const exportData = () => {
     const blob = new Blob([JSON.stringify(data, null, 2)], {
       type: "application/json",
@@ -68,8 +45,15 @@ export default function ProfilePage() {
           ).values(),
         ],
         reviews: { ...d.reviews, ...value.reviews },
+        settings: {
+          ...value.settings,
+          theme: value.settings.theme ?? "system",
+          voiceGender: value.settings.voiceGender ?? "female",
+        },
       }));
-      setMessage("Progress imported. Your current settings have been kept.");
+      setMessage(
+        "Progress and settings imported, including your theme and voice choice.",
+      );
     } catch {
       setMessage(
         "That file could not be imported. Choose an unmodified progress export from this website.",
@@ -127,6 +111,31 @@ export default function ProfilePage() {
       <div className="settings-grid">
         <section className="panel settings-panel">
           <h2>Practice preferences</h2>
+          <label className="field-label" htmlFor="theme-select">
+            Theme
+            <select
+              id="theme-select"
+              aria-label="Theme"
+              value={data.settings.theme ?? "system"}
+              onChange={(e) =>
+                update((d) => ({
+                  ...d,
+                  settings: {
+                    ...d.settings,
+                    theme: e.target.value as ThemeChoice,
+                  },
+                }))
+              }
+            >
+              <option value="system">System</option>
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
+          </label>
+          <p className="small muted">
+            System follows your device’s appearance. Your choice is saved with
+            your practice settings.
+          </p>
           <label className="field-label">
             Your daily aim
             <select
@@ -148,32 +157,33 @@ export default function ProfilePage() {
               ))}
             </select>
           </label>
-          <label className="field-label">
-            British English voice
-            <select
-              value={data.settings.preferredVoice}
-              onChange={(e) =>
-                update((d) => ({
-                  ...d,
-                  settings: { ...d.settings, preferredVoice: e.target.value },
-                }))
-              }
-            >
-              <option value="">Choose automatically</option>
-              {speech.voices
-                .filter(
-                  (v) => v.lang.toLowerCase().replace("_", "-") === "en-gb",
-                )
-                .map((v) => (
-                  <option key={v.voiceURI} value={v.voiceURI}>
-                    {v.name}
-                  </option>
-                ))}
-            </select>
+          <label className="field-label" htmlFor="voice-choice">
+            Voice
           </label>
+          <select
+            id="voice-choice"
+            aria-label="Voice"
+            value={data.settings.voiceGender ?? "female"}
+            onChange={(e) =>
+              update((d) => ({
+                ...d,
+                settings: {
+                  ...d.settings,
+                  voiceGender: e.target.value as VoiceGender,
+                  preferredVoice: "",
+                },
+              }))
+            }
+          >
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+          </select>
           <p className="small muted">
-            Voices come from your browser or device. If none are listed, install
-            a British English voice in your device settings.
+            Voices come from your browser or device. We use your chosen British
+            English voice when its name identifies it; otherwise the best
+            available British English voice is used. Browsers do not provide
+            standard gender metadata. If no British voice is installed, a
+            labelled English fallback is available.
           </p>
           <label className="field-label">
             Slow playback speed
@@ -213,22 +223,17 @@ export default function ProfilePage() {
           </p>
         </section>
         <section className="panel settings-panel">
-          <h2>Account & cloud sync</h2>
-          {!cloudConfigured ? (
-            <div className="cloud-empty">
-              <Icon name="lock" />
-              <h3>Private, on-device practice</h3>
-              <p>
-                Cloud accounts are not configured on this installation. All
-                practice features work without an account.
-              </p>
-              <p className="small muted">
-                To enable accounts, the site operator needs to configure
-                Supabase and apply the database migrations. Export a copy of
-                your progress below.
-              </p>
-            </div>
-          ) : user ? (
+          <h2>Private practice</h2>
+          <p>
+            All levels and practice tools work without an account. Progress and
+            preferences stay on this device; export a copy to move them
+            elsewhere.
+          </p>
+          <p className="small muted">
+            No account is needed. If this device already has an authenticated
+            session, you can manage its existing backup below.
+          </p>
+          {user && (
             <>
               <p>
                 Signed in as <strong>{user.email}</strong>
@@ -255,59 +260,6 @@ export default function ProfilePage() {
                 into your account.
               </p>
             </>
-          ) : (
-            <form onSubmit={authenticate} className="account-form">
-              <div className="button-row">
-                <button
-                  type="button"
-                  className={authMode === "signin" ? "tab active" : "tab"}
-                  onClick={() => setAuthMode("signin")}
-                >
-                  Sign in
-                </button>
-                <button
-                  type="button"
-                  className={authMode === "signup" ? "tab active" : "tab"}
-                  onClick={() => setAuthMode("signup")}
-                >
-                  Create account
-                </button>
-              </div>
-              <label className="field-label">
-                Email
-                <input
-                  type="email"
-                  required
-                  autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </label>
-              <label className="field-label">
-                Password
-                <input
-                  type="password"
-                  required
-                  minLength={8}
-                  autoComplete={
-                    authMode === "signin" ? "current-password" : "new-password"
-                  }
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </label>
-              <button className="button button-primary" disabled={busy}>
-                {busy
-                  ? "Please wait…"
-                  : authMode === "signin"
-                    ? "Sign in"
-                    : "Create account"}
-              </button>
-              <p className="small muted">
-                Guest progress stays on this device. Export it before signing in
-                if you want to transfer it.
-              </p>
-            </form>
           )}
         </section>
         <section className="panel settings-panel">
