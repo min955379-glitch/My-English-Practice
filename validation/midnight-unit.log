@@ -1,0 +1,254 @@
+
+> my-english-practice@0.1.0 test
+> node --import tsx --test tests/*.test.ts
+
+TAP version 13
+# Subtest: 13 complete levels, 408 items and 24 recognised patterns
+ok 1 - 13 complete levels, 408 items and 24 recognised patterns
+  ---
+  duration_ms: 2.60078
+  type: 'test'
+  ...
+# Subtest: all levels stay open regardless of existing session history
+ok 2 - all levels stay open regardless of existing session history
+  ---
+  duration_ms: 18.1032
+  type: 'test'
+  ...
+# Subtest: same-day repetition and low accuracy never restrict level access
+ok 3 - same-day repetition and low accuracy never restrict level access
+  ---
+  duration_ms: 0.610323
+  type: 'test'
+  ...
+# Subtest: legacy exports work, advanced sessions import, invalid themes and level 14 fail
+ok 4 - legacy exports work, advanced sessions import, invalid themes and level 14 fail
+  ---
+  duration_ms: 0.981931
+  type: 'test'
+  ...
+# Subtest: prepaint theme respects choice, OS, invalid choice and unavailable storage
+ok 5 - prepaint theme respects choice, OS, invalid choice and unavailable storage
+  ---
+  duration_ms: 4.212216
+  type: 'test'
+  ...
+# Subtest: cloud theme round trip prefers latest edit even without attempts and handles legacy
+ok 6 - cloud theme round trip prefers latest edit even without attempts and handles legacy
+  ---
+  duration_ms: 0.460951
+  type: 'test'
+  ...
+# Subtest: migrations enforce cross-user RLS and session ownership
+ok 7 - migrations enforce cross-user RLS and session ownership
+  ---
+  duration_ms: 3429.427476
+  type: 'test'
+  ...
+# Subtest: curriculum has at least five items for each level
+ok 8 - curriculum has at least five items for each level
+  ---
+  duration_ms: 3.584943
+  type: 'test'
+  ...
+# Subtest: mistakes return tomorrow with one-day interval
+ok 9 - mistakes return tomorrow with one-day interval
+  ---
+  duration_ms: 14.939657
+  type: 'test'
+  ...
+# Subtest: same-day success cannot create mastery
+ok 10 - same-day success cannot create mastery
+  ---
+  duration_ms: 1.531333
+  type: 'test'
+  ...
+# Subtest: separate days and a long interval earn mastery
+ok 11 - separate days and a long interval earn mastery
+  ---
+  duration_ms: 0.956319
+  type: 'test'
+  ...
+# Subtest: new mistake removes mastery
+ok 12 - new mistake removes mastery
+  ---
+  duration_ms: 0.673894
+  type: 'test'
+  ...
+# Subtest: assisted retries do not inflate accuracy
+ok 13 - assisted retries do not inflate accuracy
+  ---
+  duration_ms: 1.683682
+  type: 'test'
+  ...
+# Subtest: due words are selected even before their exact time today
+ok 14 - due words are selected even before their exact time today
+  ---
+  duration_ms: 1.007249
+  type: 'test'
+  ...
+# Subtest: new learner can access every level
+ok 15 - new learner can access every level
+  ---
+  duration_ms: 0.288627
+  type: 'test'
+  ...
+# Subtest: invalid imported data is rejected
+ok 16 - invalid imported data is rejected
+  ---
+  duration_ms: 1.827003
+  type: 'test'
+  ...
+# Subtest: due reviews from any level are eligible without an access gate
+ok 17 - due reviews from any level are eligible without an access gate
+  ---
+  duration_ms: 0.977409
+  type: 'test'
+  ...
+# Subtest: configured speech endpoint enforces origin, consent, lesson whitelist and limits; provider is mocked
+ok 18 - configured speech endpoint enforces origin, consent, lesson whitelist and limits; provider is mocked
+  ---
+  duration_ms: 35.611856
+  type: 'test'
+  ...
+# Subtest: planner uses local Monday boundaries and seven days
+ok 19 - planner uses local Monday boundaries and seven days
+  ---
+  duration_ms: 15.752048
+  type: 'test'
+  ...
+# Subtest: new week retains choices and clears ticks without touching progress
+ok 20 - new week retains choices and clears ticks without touching progress
+  ---
+  duration_ms: 0.823455
+  type: 'test'
+  ...
+# Subtest: planner and audio preferences export/import/sync and invalid preferences are rejected
+ok 21 - planner and audio preferences export/import/sync and invalid preferences are rejected
+  ---
+  duration_ms: 2.501434
+  type: 'test'
+  ...
+# Subtest: enhanced audio only accepts listed lesson text, supported rates and explicit consent
+ok 22 - enhanced audio only accepts listed lesson text, supported rates and explicit consent
+  ---
+  duration_ms: 0.338847
+  type: 'test'
+  ...
+# Subtest: provider requests use fixed British voices, escaped SSML and supported slow rate
+ok 23 - provider requests use fixed British voices, escaped SSML and supported slow rate
+  ---
+  duration_ms: 0.414272
+  type: 'test'
+  ...
+# Subtest: speech provider adapter returns audio and fails safely, without a real provider call
+ok 24 - speech provider adapter returns audio and fails safely, without a real provider call
+  ---
+  duration_ms: 21.185512
+  type: 'test'
+  ...
+# Subtest: speech guard caps requests and daily characters and rolls over correctly
+ok 25 - speech guard caps requests and daily characters and rolls over correctly
+  ---
+  duration_ms: 0.411495
+  type: 'test'
+  ...
+# Subtest: all former green palette values are removed and normal text contrast is AA
+ok 26 - all former green palette values are removed and normal text contrast is AA
+  ---
+  duration_ms: 0.578979
+  type: 'test'
+  ...
+# Subtest: pending preference checkpoint survives immediate reload and does not overwrite newer disk settings
+ok 27 - pending preference checkpoint survives immediate reload and does not overwrite newer disk settings
+  ---
+  duration_ms: 5.954297
+  type: 'test'
+  ...
+# Subtest: speech origin accepts same-site and canonical proxy origin, never arbitrary sites
+ok 28 - speech origin accepts same-site and canonical proxy origin, never arbitrary sites
+  ---
+  duration_ms: 12.148954
+  type: 'test'
+  ...
+# Subtest: Google UK female and male voices are selected rather than opposite gender or US default
+ok 29 - Google UK female and male voices are selected rather than opposite gender or US default
+  ---
+  duration_ms: 1.585433
+  type: 'test'
+  ...
+# Subtest: named Microsoft British male and female voices, mixed-case tags and underscore tags work
+ok 30 - named Microsoft British male and female voices, mixed-case tags and underscore tags work
+  ---
+  duration_ms: 0.698714
+  type: 'test'
+  ...
+# Subtest: British Apple voices are recognised and unknown voices are not guessed
+ok 31 - British Apple voices are recognised and unknown voices are not guessed
+  ---
+  duration_ms: 0.156906
+  type: 'test'
+  ...
+# Subtest: missing gender falls back to best British voice and gives a clear message
+ok 32 - missing gender falls back to best British voice and gives a clear message
+  ---
+  duration_ms: 0.496053
+  type: 'test'
+  ...
+# Subtest: legacy preferred URI cannot override a matching requested gender
+ok 33 - legacy preferred URI cannot override a matching requested gender
+  ---
+  duration_ms: 0.16941
+  type: 'test'
+  ...
+# Subtest: without British voices use labelled English fallback; without English do not crash
+ok 34 - without British voices use labelled English fallback; without English do not crash
+  ---
+  duration_ms: 0.140996
+  type: 'test'
+  ...
+# Subtest: voice preference exports/imports, rejects invalid values and remains legacy-compatible
+ok 35 - voice preference exports/imports, rejects invalid values and remains legacy-compatible
+  ---
+  duration_ms: 18.65858
+  type: 'test'
+  ...
+# Subtest: voice sync chooses latest edit without attempts and normalises legacy snapshots
+ok 36 - voice sync chooses latest edit without attempts and normalises legacy snapshots
+  ---
+  duration_ms: 0.505181
+  type: 'test'
+  ...
+# Subtest: all 13 levels are available for guest and account-shaped data without attempts
+ok 37 - all 13 levels are available for guest and account-shaped data without attempts
+  ---
+  duration_ms: 0.770931
+  type: 'test'
+  ...
+# Subtest: curriculum has precisely 25 additions to each original level with complete unique metadata
+ok 38 - curriculum has precisely 25 additions to each original level with complete unique metadata
+  ---
+  duration_ms: 2.425224
+  type: 'test'
+  ...
+# Subtest: all speech construction remains in the shared preference-aware hook
+ok 39 - all speech construction remains in the shared preference-aware hook
+  ---
+  duration_ms: 0.427845
+  type: 'test'
+  ...
+# Subtest: draft checkpoint restores letters without changing attempts, reviews or level access
+ok 40 - draft checkpoint restores letters without changing attempts, reviews or level access
+  ---
+  duration_ms: 4.80901
+  type: 'test'
+  ...
+1..40
+# tests 40
+# suites 0
+# pass 40
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5230.898825

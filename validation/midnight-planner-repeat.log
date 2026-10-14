@@ -1,0 +1,13 @@
+
+Running 8 tests using 1 worker
+
+  ✓  1 [chromium] › tests/e2e/studio.spec.ts:84:5 › weekly plan saves checklist and choices and opens the right activity (1.5s)
+  ✓  2 [chromium] › tests/e2e/studio.spec.ts:84:5 › weekly plan saves checklist and choices and opens the right activity (1.4s)
+  ✓  3 [chromium] › tests/e2e/studio.spec.ts:84:5 › weekly plan saves checklist and choices and opens the right activity (1.4s)
+  ✓  4 [chromium] › tests/e2e/studio.spec.ts:84:5 › weekly plan saves checklist and choices and opens the right activity (1.5s)
+  ✓  5 [chromium] › tests/e2e/studio.spec.ts:84:5 › weekly plan saves checklist and choices and opens the right activity (1.5s)
+  ✓  6 [chromium] › tests/e2e/studio.spec.ts:84:5 › weekly plan saves checklist and choices and opens the right activity (1.5s)
+  ✓  7 [chromium] › tests/e2e/studio.spec.ts:84:5 › weekly plan saves checklist and choices and opens the right activity (1.6s)
+  ✓  8 [chromium] › tests/e2e/studio.spec.ts:84:5 › weekly plan saves checklist and choices and opens the right activity (1.7s)
+
+  8 passed (17.5s)

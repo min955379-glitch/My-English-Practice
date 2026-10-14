@@ -1,0 +1,49 @@
+
+> my-english-practice@0.1.0 build
+> next build
+
+▲ Next.js 16.4.0 (Turbopack)
+✓ Running next.config.ts took 25ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 645ms
+  Running TypeScript ...
+  Finished TypeScript in 3.8s ...
+  Collecting page data using 1 worker ...
+  Generating static pages using 1 worker (0/25) ...
+  Generating static pages using 1 worker (6/25) 
+  Generating static pages using 1 worker (12/25) 
+  Generating static pages using 1 worker (18/25) 
+✓ Generating static pages using 1 worker (25/25) in 574ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ƒ /api/account
+├ ƒ /api/health
+├ ƒ /api/readiness
+├ ƒ /api/speech
+├ ƒ /api/sync
+├ ○ /contact
+├ ○ /dashboard
+├ ○ /dictation
+├ ○ /guides
+├ ○ /help
+├ ○ /learn
+├ ○ /phonics
+├ ○ /planner
+├ ○ /privacy
+├ ○ /profile
+├ ƒ /pronunciation
+├ ○ /reading
+├ ○ /robots.txt
+├ ƒ /session
+├ ○ /sitemap.xml
+└ ○ /terms
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

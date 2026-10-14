@@ -159,7 +159,7 @@ test("curriculum has precisely 25 additions to each original level with complete
 test("all speech construction remains in the shared preference-aware hook", () => {
   const routes = [
     "src/components/practice/DrillEngine.tsx",
-    "src/app/pronunciation/page.tsx",
+    "src/components/practice/PronunciationPractice.tsx",
     "src/app/reading/page.tsx",
     "src/app/phonics/page.tsx",
     "src/components/practice/ListenInstructions.tsx",
