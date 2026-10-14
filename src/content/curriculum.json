@@ -1,0 +1,989 @@
+{
+  "levels": [
+    {
+      "id": 1,
+      "name": "Short Vowels & CVC Words",
+      "description": "Start with short vowel sounds and three-letter words.",
+      "unlockAccuracyPercent": 0,
+      "requiredSessions": 0
+    },
+    {
+      "id": 2,
+      "name": "Silent \"e\" and Long Vowels",
+      "description": "Hear how a final silent e changes a vowel sound."
+    },
+    {
+      "id": 3,
+      "name": "Double Consonants",
+      "description": "Practise words with two matching consonants together."
+    },
+    {
+      "id": 4,
+      "name": "Common Digraphs (sh, ch, th, wh, ph)",
+      "description": "Learn common pairs of letters and their sounds."
+    },
+    {
+      "id": 5,
+      "name": "Blends (bl, br, cl, cr, dr, fl, fr, tr)",
+      "description": "Listen for consonants that blend at the start of a word."
+    },
+    {
+      "id": 6,
+      "name": "Syllable Patterns (2 syllables, stress)",
+      "description": "Break useful words into two spoken parts."
+    },
+    {
+      "id": 7,
+      "name": "Complex Patterns (silent letters, irregulars)",
+      "description": "Practise silent letters and less predictable spellings."
+    },
+    {
+      "id": 8,
+      "name": "Dictation & Phrases",
+      "description": "Listen and spell useful phrases for everyday situations.",
+      "unlockAccuracyPercent": 75
+    }
+  ],
+  "patterns": [
+    {
+      "category": "short_cvc",
+      "description": "A consonant, a short vowel and a final consonant.",
+      "orderIndex": 0,
+      "exampleWords": [
+        "cat",
+        "dog",
+        "sun"
+      ]
+    },
+    {
+      "category": "silent_e",
+      "description": "A final e is silent and often changes the earlier vowel sound.",
+      "orderIndex": 1,
+      "exampleWords": [
+        "name",
+        "time",
+        "ride"
+      ]
+    },
+    {
+      "category": "double_consonant",
+      "description": "Notice two matching consonant letters in the spelling.",
+      "orderIndex": 2,
+      "exampleWords": [
+        "letter",
+        "happy",
+        "dinner"
+      ]
+    },
+    {
+      "category": "digraph_sh",
+      "description": "The letters sh usually represent /ʃ/.",
+      "orderIndex": 3,
+      "exampleWords": [
+        "ship"
+      ]
+    },
+    {
+      "category": "digraph_ch",
+      "description": "The letters ch often represent /tʃ/.",
+      "orderIndex": 4,
+      "exampleWords": [
+        "chair"
+      ]
+    },
+    {
+      "category": "digraph_th",
+      "description": "The letters th can represent /θ/ or /ð/.",
+      "orderIndex": 5,
+      "exampleWords": [
+        "think"
+      ]
+    },
+    {
+      "category": "digraph_wh",
+      "description": "In Standard Southern British English, wh usually represents /w/.",
+      "orderIndex": 6,
+      "exampleWords": [
+        "when"
+      ]
+    },
+    {
+      "category": "digraph_ph",
+      "description": "The letters ph commonly represent /f/.",
+      "orderIndex": 7,
+      "exampleWords": [
+        "phone"
+      ]
+    },
+    {
+      "category": "blend_bl",
+      "description": "Hear /b/ followed by /l/ at the start.",
+      "orderIndex": 8,
+      "exampleWords": [
+        "black"
+      ]
+    },
+    {
+      "category": "blend_br",
+      "description": "Hear /b/ followed by /r/ at the start.",
+      "orderIndex": 9,
+      "exampleWords": [
+        "bring"
+      ]
+    },
+    {
+      "category": "blend_cl",
+      "description": "Hear /k/ followed by /l/ at the start.",
+      "orderIndex": 10,
+      "exampleWords": [
+        "cloud"
+      ]
+    },
+    {
+      "category": "blend_tr",
+      "description": "Hear the tr consonant blend at the start.",
+      "orderIndex": 11,
+      "exampleWords": [
+        "train"
+      ]
+    },
+    {
+      "category": "blend_fl",
+      "description": "Hear /f/ followed by /l/ at the start.",
+      "orderIndex": 12,
+      "exampleWords": [
+        "floor"
+      ]
+    },
+    {
+      "category": "blend_fr",
+      "description": "Hear /f/ followed by /r/, as in free, fresh and from.",
+      "orderIndex": 13,
+      "exampleWords": [
+        "free",
+        "fresh",
+        "from"
+      ]
+    },
+    {
+      "category": "two_syllables",
+      "description": "Hear two syllables and notice which is stressed.",
+      "orderIndex": 14,
+      "exampleWords": [
+        "table",
+        "garden",
+        "mother"
+      ]
+    },
+    {
+      "category": "silent_letter",
+      "description": "Some written letters have no separate spoken sound.",
+      "orderIndex": 15,
+      "exampleWords": [
+        "knife",
+        "write",
+        "answer"
+      ]
+    },
+    {
+      "category": "irregular",
+      "description": "Some common words need extra practice because their spelling is less predictable.",
+      "orderIndex": 16,
+      "exampleWords": [
+        "business"
+      ]
+    },
+    {
+      "category": "dictation",
+      "description": "Listen to a useful phrase, including the spaces between words.",
+      "orderIndex": 17,
+      "exampleWords": [
+        "thank you very much",
+        "how are you today",
+        "a return ticket please"
+      ]
+    }
+  ],
+  "words": [
+    {
+      "level": 1,
+      "text": "cat",
+      "phonetic": "/kæt/",
+      "syllables": [
+        "cat"
+      ],
+      "syllableCount": 1,
+      "syllableSplit": "cat",
+      "stressPattern": "1",
+      "patternCategory": "short_cvc",
+      "wordFamily": "-at",
+      "meaning": "A small domestic animal.",
+      "example": "The cat is outside.",
+      "kind": "word",
+      "id": "1:cat"
+    },
+    {
+      "level": 1,
+      "text": "dog",
+      "phonetic": "/dɒɡ/",
+      "syllables": [
+        "dog"
+      ],
+      "syllableCount": 1,
+      "syllableSplit": "dog",
+      "stressPattern": "1",
+      "patternCategory": "short_cvc",
+      "wordFamily": "-og",
+      "meaning": "A common domestic animal.",
+      "example": "I walk the dog before work.",
+      "kind": "word",
+      "id": "1:dog"
+    },
+    {
+      "level": 1,
+      "text": "sun",
+      "phonetic": "/sʌn/",
+      "syllables": [
+        "sun"
+      ],
+      "syllableCount": 1,
+      "syllableSplit": "sun",
+      "stressPattern": "1",
+      "patternCategory": "short_cvc",
+      "wordFamily": "-un",
+      "meaning": "The star that gives us daylight.",
+      "example": "The sun is bright today.",
+      "kind": "word",
+      "id": "1:sun"
+    },
+    {
+      "level": 1,
+      "text": "bed",
+      "phonetic": "/bed/",
+      "syllables": [
+        "bed"
+      ],
+      "syllableCount": 1,
+      "syllableSplit": "bed",
+      "stressPattern": "1",
+      "patternCategory": "short_cvc",
+      "wordFamily": "-ed",
+      "meaning": "Furniture used for sleeping.",
+      "example": "The hotel room has one bed.",
+      "kind": "word",
+      "id": "1:bed"
+    },
+    {
+      "level": 1,
+      "text": "cup",
+      "phonetic": "/kʌp/",
+      "syllables": [
+        "cup"
+      ],
+      "syllableCount": 1,
+      "syllableSplit": "cup",
+      "stressPattern": "1",
+      "patternCategory": "short_cvc",
+      "wordFamily": "-up",
+      "meaning": "A small container for a drink.",
+      "example": "I would like a cup of tea.",
+      "kind": "word",
+      "id": "1:cup"
+    },
+    {
+      "level": 2,
+      "text": "name",
+      "phonetic": "/neɪm/",
+      "syllables": [
+        "name"
+      ],
+      "syllableCount": 1,
+      "syllableSplit": "name",
+      "stressPattern": "1",
+      "patternCategory": "silent_e",
+      "wordFamily": "-ame",
+      "meaning": "The word used to identify someone.",
+      "example": "Please write your name here.",
+      "kind": "word",
+      "id": "2:name"
+    },
+    {
+      "level": 2,
+      "text": "time",
+      "phonetic": "/taɪm/",
+      "syllables": [
+        "time"
+      ],
+      "syllableCount": 1,
+      "syllableSplit": "time",
+      "stressPattern": "1",
+      "patternCategory": "silent_e",
+      "wordFamily": "-ime",
+      "meaning": "What a clock measures.",
+      "example": "What time does the train leave?",
+      "kind": "word",
+      "id": "2:time"
+    },
+    {
+      "level": 2,
+      "text": "ride",
+      "phonetic": "/raɪd/",
+      "syllables": [
+        "ride"
+      ],
+      "syllableCount": 1,
+      "syllableSplit": "ride",
+      "stressPattern": "1",
+      "patternCategory": "silent_e",
+      "wordFamily": "-ide",
+      "meaning": "To travel on a bicycle or similar transport.",
+      "example": "I ride my bicycle to work.",
+      "kind": "word",
+      "id": "2:ride"
+    },
+    {
+      "level": 2,
+      "text": "note",
+      "phonetic": "/nəʊt/",
+      "syllables": [
+        "note"
+      ],
+      "syllableCount": 1,
+      "syllableSplit": "note",
+      "stressPattern": "1",
+      "patternCategory": "silent_e",
+      "wordFamily": "-ote",
+      "meaning": "A short written message.",
+      "example": "Please leave a note on the desk.",
+      "kind": "word",
+      "id": "2:note"
+    },
+    {
+      "level": 2,
+      "text": "home",
+      "phonetic": "/həʊm/",
+      "syllables": [
+        "home"
+      ],
+      "syllableCount": 1,
+      "syllableSplit": "home",
+      "stressPattern": "1",
+      "patternCategory": "silent_e",
+      "wordFamily": "-ome",
+      "meaning": "The place where you live.",
+      "example": "I am going home after work.",
+      "kind": "word",
+      "id": "2:home"
+    },
+    {
+      "level": 3,
+      "text": "letter",
+      "phonetic": "/ˈlet.ə/",
+      "syllables": [
+        "let",
+        "ter"
+      ],
+      "syllableCount": 2,
+      "syllableSplit": "let-ter",
+      "stressPattern": "1-0",
+      "patternCategory": "double_consonant",
+      "wordFamily": "letter, letters",
+      "meaning": "A written message sent to someone.",
+      "example": "The letter arrived this morning.",
+      "kind": "word",
+      "id": "3:letter"
+    },
+    {
+      "level": 3,
+      "text": "happy",
+      "phonetic": "/ˈhæp.i/",
+      "syllables": [
+        "hap",
+        "py"
+      ],
+      "syllableCount": 2,
+      "syllableSplit": "hap-py",
+      "stressPattern": "1-0",
+      "patternCategory": "double_consonant",
+      "wordFamily": "happy, happier, happiness",
+      "meaning": "Feeling pleased.",
+      "example": "I am happy with the new job.",
+      "kind": "word",
+      "id": "3:happy"
+    },
+    {
+      "level": 3,
+      "text": "dinner",
+      "phonetic": "/ˈdɪn.ə/",
+      "syllables": [
+        "din",
+        "ner"
+      ],
+      "syllableCount": 2,
+      "syllableSplit": "din-ner",
+      "stressPattern": "1-0",
+      "patternCategory": "double_consonant",
+      "wordFamily": "dinner, dinners",
+      "meaning": "A main meal.",
+      "example": "We have dinner at seven.",
+      "kind": "word",
+      "id": "3:dinner"
+    },
+    {
+      "level": 3,
+      "text": "little",
+      "phonetic": "/ˈlɪt.əl/",
+      "syllables": [
+        "lit",
+        "tle"
+      ],
+      "syllableCount": 2,
+      "syllableSplit": "lit-tle",
+      "stressPattern": "1-0",
+      "patternCategory": "double_consonant",
+      "wordFamily": "little, littler",
+      "meaning": "Small in size or amount.",
+      "example": "I need a little more time.",
+      "kind": "word",
+      "id": "3:little"
+    },
+    {
+      "level": 3,
+      "text": "office",
+      "phonetic": "/ˈɒf.ɪs/",
+      "syllables": [
+        "of",
+        "fice"
+      ],
+      "syllableCount": 2,
+      "syllableSplit": "of-fice",
+      "stressPattern": "1-0",
+      "patternCategory": "double_consonant",
+      "wordFamily": "office, offices",
+      "meaning": "A place where people do desk work.",
+      "example": "The office opens at nine.",
+      "kind": "word",
+      "id": "3:office"
+    },
+    {
+      "level": 4,
+      "text": "ship",
+      "phonetic": "/ʃɪp/",
+      "syllables": [
+        "ship"
+      ],
+      "syllableCount": 1,
+      "syllableSplit": "ship",
+      "stressPattern": "1",
+      "patternCategory": "digraph_sh",
+      "wordFamily": "-ip",
+      "meaning": "A large boat.",
+      "example": "The ship leaves the port tonight.",
+      "kind": "word",
+      "id": "4:ship"
+    },
+    {
+      "level": 4,
+      "text": "chair",
+      "phonetic": "/tʃeə/",
+      "syllables": [
+        "chair"
+      ],
+      "syllableCount": 1,
+      "syllableSplit": "chair",
+      "stressPattern": "1",
+      "patternCategory": "digraph_ch",
+      "wordFamily": "-air",
+      "meaning": "A seat for one person.",
+      "example": "There is a chair beside the desk.",
+      "kind": "word",
+      "id": "4:chair"
+    },
+    {
+      "level": 4,
+      "text": "think",
+      "phonetic": "/θɪŋk/",
+      "syllables": [
+        "think"
+      ],
+      "syllableCount": 1,
+      "syllableSplit": "think",
+      "stressPattern": "1",
+      "patternCategory": "digraph_th",
+      "wordFamily": "-ink",
+      "meaning": "To consider something in your mind.",
+      "example": "I need time to think.",
+      "kind": "word",
+      "id": "4:think"
+    },
+    {
+      "level": 4,
+      "text": "when",
+      "phonetic": "/wen/",
+      "syllables": [
+        "when"
+      ],
+      "syllableCount": 1,
+      "syllableSplit": "when",
+      "stressPattern": "1",
+      "patternCategory": "digraph_wh",
+      "wordFamily": "when, whenever",
+      "meaning": "At what time.",
+      "example": "When does the bank close?",
+      "kind": "word",
+      "id": "4:when"
+    },
+    {
+      "level": 4,
+      "text": "phone",
+      "phonetic": "/fəʊn/",
+      "syllables": [
+        "phone"
+      ],
+      "syllableCount": 1,
+      "syllableSplit": "phone",
+      "stressPattern": "1",
+      "patternCategory": "digraph_ph",
+      "wordFamily": "phone, phones, telephone",
+      "meaning": "A device used to call someone.",
+      "example": "My phone is on the table.",
+      "kind": "word",
+      "id": "4:phone"
+    },
+    {
+      "level": 5,
+      "text": "black",
+      "phonetic": "/blæk/",
+      "syllables": [
+        "black"
+      ],
+      "syllableCount": 1,
+      "syllableSplit": "black",
+      "stressPattern": "1",
+      "patternCategory": "blend_bl",
+      "wordFamily": "-ack",
+      "meaning": "A very dark colour.",
+      "example": "My work bag is black.",
+      "kind": "word",
+      "id": "5:black"
+    },
+    {
+      "level": 5,
+      "text": "bring",
+      "phonetic": "/brɪŋ/",
+      "syllables": [
+        "bring"
+      ],
+      "syllableCount": 1,
+      "syllableSplit": "bring",
+      "stressPattern": "1",
+      "patternCategory": "blend_br",
+      "wordFamily": "-ing",
+      "meaning": "To take something with you to a place.",
+      "example": "Please bring your ticket.",
+      "kind": "word",
+      "id": "5:bring"
+    },
+    {
+      "level": 5,
+      "text": "cloud",
+      "phonetic": "/klaʊd/",
+      "syllables": [
+        "cloud"
+      ],
+      "syllableCount": 1,
+      "syllableSplit": "cloud",
+      "stressPattern": "1",
+      "patternCategory": "blend_cl",
+      "wordFamily": "-oud",
+      "meaning": "A visible mass of water droplets in the sky.",
+      "example": "A cloud is covering the sun.",
+      "kind": "word",
+      "id": "5:cloud"
+    },
+    {
+      "level": 5,
+      "text": "train",
+      "phonetic": "/treɪn/",
+      "syllables": [
+        "train"
+      ],
+      "syllableCount": 1,
+      "syllableSplit": "train",
+      "stressPattern": "1",
+      "patternCategory": "blend_tr",
+      "wordFamily": "-ain",
+      "meaning": "A vehicle that travels on railway tracks.",
+      "example": "The train arrives at ten.",
+      "kind": "word",
+      "id": "5:train"
+    },
+    {
+      "level": 5,
+      "text": "floor",
+      "phonetic": "/flɔː/",
+      "syllables": [
+        "floor"
+      ],
+      "syllableCount": 1,
+      "syllableSplit": "floor",
+      "stressPattern": "1",
+      "patternCategory": "blend_fl",
+      "wordFamily": "floor, floors, flooring",
+      "meaning": "The surface you stand on inside a building.",
+      "example": "The office is on the first floor.",
+      "kind": "word",
+      "id": "5:floor"
+    },
+    {
+      "level": 6,
+      "text": "table",
+      "phonetic": "/ˈteɪ.bəl/",
+      "syllables": [
+        "ta",
+        "ble"
+      ],
+      "syllableCount": 2,
+      "syllableSplit": "ta-ble",
+      "stressPattern": "1-0",
+      "patternCategory": "two_syllables",
+      "wordFamily": "table, tables",
+      "meaning": "Furniture with a flat top.",
+      "example": "The receipt is on the table.",
+      "kind": "word",
+      "id": "6:table"
+    },
+    {
+      "level": 6,
+      "text": "garden",
+      "phonetic": "/ˈɡɑː.dən/",
+      "syllables": [
+        "gar",
+        "den"
+      ],
+      "syllableCount": 2,
+      "syllableSplit": "gar-den",
+      "stressPattern": "1-0",
+      "patternCategory": "two_syllables",
+      "wordFamily": "garden, gardener, gardening",
+      "meaning": "An outdoor area where plants grow.",
+      "example": "We sit in the garden after work.",
+      "kind": "word",
+      "id": "6:garden"
+    },
+    {
+      "level": 6,
+      "text": "mother",
+      "phonetic": "/ˈmʌð.ə/",
+      "syllables": [
+        "moth",
+        "er"
+      ],
+      "syllableCount": 2,
+      "syllableSplit": "moth-er",
+      "stressPattern": "1-0",
+      "patternCategory": "two_syllables",
+      "wordFamily": "mother, mothers",
+      "meaning": "A female parent.",
+      "example": "I will phone my mother this evening.",
+      "kind": "word",
+      "id": "6:mother"
+    },
+    {
+      "level": 6,
+      "text": "ticket",
+      "phonetic": "/ˈtɪk.ɪt/",
+      "syllables": [
+        "ti",
+        "cket"
+      ],
+      "syllableCount": 2,
+      "syllableSplit": "ti-cket",
+      "stressPattern": "1-0",
+      "patternCategory": "two_syllables",
+      "wordFamily": "ticket, tickets",
+      "meaning": "Proof that you have paid for a journey or event.",
+      "example": "I need a return ticket.",
+      "kind": "word",
+      "id": "6:ticket"
+    },
+    {
+      "level": 6,
+      "text": "hotel",
+      "phonetic": "/həʊˈtel/",
+      "syllables": [
+        "ho",
+        "tel"
+      ],
+      "syllableCount": 2,
+      "syllableSplit": "ho-tel",
+      "stressPattern": "0-1",
+      "patternCategory": "two_syllables",
+      "wordFamily": "hotel, hotels",
+      "meaning": "A place where travellers pay to stay.",
+      "example": "The hotel is near the station.",
+      "kind": "word",
+      "id": "6:hotel"
+    },
+    {
+      "level": 7,
+      "text": "knife",
+      "phonetic": "/naɪf/",
+      "syllables": [
+        "knife"
+      ],
+      "syllableCount": 1,
+      "syllableSplit": "knife",
+      "stressPattern": "1",
+      "patternCategory": "silent_letter",
+      "wordFamily": "knife, knives",
+      "meaning": "A tool used for cutting.",
+      "example": "Please pass the knife.",
+      "kind": "word",
+      "id": "7:knife"
+    },
+    {
+      "level": 7,
+      "text": "write",
+      "phonetic": "/raɪt/",
+      "syllables": [
+        "write"
+      ],
+      "syllableCount": 1,
+      "syllableSplit": "write",
+      "stressPattern": "1",
+      "patternCategory": "silent_letter",
+      "wordFamily": "write, writer, writing",
+      "meaning": "To form letters or words.",
+      "example": "Please write the address clearly.",
+      "kind": "word",
+      "id": "7:write"
+    },
+    {
+      "level": 7,
+      "text": "answer",
+      "phonetic": "/ˈɑːn.sə/",
+      "syllables": [
+        "an",
+        "swer"
+      ],
+      "syllableCount": 2,
+      "syllableSplit": "an-swer",
+      "stressPattern": "1-0",
+      "patternCategory": "silent_letter",
+      "wordFamily": "answer, answers, answering",
+      "meaning": "A reply to a question.",
+      "example": "Please answer the phone.",
+      "kind": "word",
+      "id": "7:answer"
+    },
+    {
+      "level": 7,
+      "text": "island",
+      "phonetic": "/ˈaɪ.lənd/",
+      "syllables": [
+        "is",
+        "land"
+      ],
+      "syllableCount": 2,
+      "syllableSplit": "is-land",
+      "stressPattern": "1-0",
+      "patternCategory": "silent_letter",
+      "wordFamily": "island, islands",
+      "meaning": "Land surrounded by water.",
+      "example": "We travelled to the island by boat.",
+      "kind": "word",
+      "id": "7:island"
+    },
+    {
+      "level": 7,
+      "text": "business",
+      "phonetic": "/ˈbɪz.nəs/",
+      "syllables": [
+        "busi",
+        "ness"
+      ],
+      "syllableCount": 2,
+      "syllableSplit": "busi-ness",
+      "stressPattern": "1-0",
+      "patternCategory": "irregular",
+      "wordFamily": "business, businesses",
+      "meaning": "An organisation that provides goods or services.",
+      "example": "She runs a small business.",
+      "kind": "word",
+      "id": "7:business"
+    },
+    {
+      "level": 8,
+      "text": "thank you very much",
+      "phonetic": "/θæŋk juː ˈver.i mʌtʃ/",
+      "syllables": [
+        "thank",
+        "you",
+        "ve",
+        "ry",
+        "much"
+      ],
+      "syllableCount": 5,
+      "syllableSplit": "thank you ve-ry much",
+      "stressPattern": "1-0-1-0-1",
+      "patternCategory": "dictation",
+      "wordFamily": "polite thanks",
+      "meaning": "A polite way to express thanks.",
+      "example": "Thank you very much for your help.",
+      "kind": "phrase",
+      "id": "8:thank you very much"
+    },
+    {
+      "level": 8,
+      "text": "how are you today",
+      "phonetic": "/haʊ ə juː təˈdeɪ/",
+      "syllables": [
+        "how",
+        "are",
+        "you",
+        "to",
+        "day"
+      ],
+      "syllableCount": 5,
+      "syllableSplit": "how are you to-day",
+      "stressPattern": "1-0-0-0-1",
+      "patternCategory": "dictation",
+      "wordFamily": "daily greetings",
+      "meaning": "A question about how someone feels.",
+      "example": "Good morning. How are you today?",
+      "kind": "phrase",
+      "id": "8:how are you today"
+    },
+    {
+      "level": 8,
+      "text": "a return ticket please",
+      "phonetic": "/ə rɪˈtɜːn ˈtɪk.ɪt pliːz/",
+      "syllables": [
+        "a",
+        "re",
+        "turn",
+        "ti",
+        "cket",
+        "please"
+      ],
+      "syllableCount": 6,
+      "syllableSplit": "a re-turn ti-cket please",
+      "stressPattern": "0-0-1-1-0-1",
+      "patternCategory": "dictation",
+      "wordFamily": "travel requests",
+      "meaning": "A polite request for travel in both directions.",
+      "example": "A return ticket please, to London.",
+      "kind": "phrase",
+      "id": "8:a return ticket please"
+    },
+    {
+      "level": 8,
+      "text": "where is the station",
+      "phonetic": "/weər ɪz ðə ˈsteɪ.ʃən/",
+      "syllables": [
+        "where",
+        "is",
+        "the",
+        "sta",
+        "tion"
+      ],
+      "syllableCount": 5,
+      "syllableSplit": "where is the sta-tion",
+      "stressPattern": "1-0-0-1-0",
+      "patternCategory": "dictation",
+      "wordFamily": "asking directions",
+      "meaning": "A question asking for the station's location.",
+      "example": "Excuse me, where is the station?",
+      "kind": "phrase",
+      "id": "8:where is the station"
+    },
+    {
+      "level": 8,
+      "text": "I would like a receipt",
+      "phonetic": "/aɪ wʊd laɪk ə rɪˈsiːt/",
+      "syllables": [
+        "I",
+        "would",
+        "like",
+        "a",
+        "re",
+        "ceipt"
+      ],
+      "syllableCount": 6,
+      "syllableSplit": "I would like a re-ceipt",
+      "stressPattern": "0-0-1-0-0-1",
+      "patternCategory": "dictation",
+      "wordFamily": "payment requests",
+      "meaning": "A polite request for proof of payment.",
+      "example": "I would like a receipt for this payment.",
+      "kind": "phrase",
+      "id": "8:I would like a receipt"
+    },
+    {
+      "id": "8:The bus leaves at nine",
+      "level": 8,
+      "text": "The bus leaves at nine",
+      "phonetic": "/ðə bʌs liːvz ət naɪn/",
+      "syllables": [
+        "The",
+        "bus",
+        "leaves",
+        "at",
+        "nine"
+      ],
+      "syllableCount": 5,
+      "syllableSplit": "The bus leaves at nine",
+      "stressPattern": "0-1-1-0-1",
+      "patternCategory": "dictation",
+      "wordFamily": "travel statements",
+      "meaning": "A sentence about the departure time.",
+      "example": "The bus leaves at nine.",
+      "kind": "sentence"
+    },
+    {
+      "id": "8:Please send the invoice",
+      "level": 8,
+      "text": "Please send the invoice",
+      "phonetic": "/pliːz send ði ˈɪn.vɔɪs/",
+      "syllables": [
+        "Please",
+        "send",
+        "the",
+        "in",
+        "voice"
+      ],
+      "syllableCount": 5,
+      "syllableSplit": "Please send the in-voice",
+      "stressPattern": "1-1-0-1-0",
+      "patternCategory": "dictation",
+      "wordFamily": "work requests",
+      "meaning": "A sentence asking for a payment document.",
+      "example": "Please send the invoice.",
+      "kind": "sentence"
+    },
+    {
+      "id": "8:I work in a small office",
+      "level": 8,
+      "text": "I work in a small office",
+      "phonetic": "/aɪ wɜːk ɪn ə smɔːl ˈɒf.ɪs/",
+      "syllables": [
+        "I",
+        "work",
+        "in",
+        "a",
+        "small",
+        "of",
+        "fice"
+      ],
+      "syllableCount": 7,
+      "syllableSplit": "I work in a small of-fice",
+      "stressPattern": "0-1-0-0-1-1-0",
+      "patternCategory": "dictation",
+      "wordFamily": "work statements",
+      "meaning": "A sentence describing a workplace.",
+      "example": "I work in a small office.",
+      "kind": "sentence"
+    }
+  ]
+}
