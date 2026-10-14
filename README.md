@@ -1,155 +1,147 @@
 # My English Practice
 
-A British English spelling and pronunciation practice website for adult beginners who find spelling difficult and cannot yet read English smoothly.
+A calm British English spelling and pronunciation practice website for adult beginners, built with Next.js 16, React 19 and TypeScript.
 
-**Repository:** [min955379-glitch/My-English-Practice](https://github.com/min955379-glitch/My-English-Practice)
+Repository: [min955379-glitch/My-English-Practice](https://github.com/min955379-glitch/My-English-Practice).
 
-## Why this project exists
+## Current implementation
 
-Many English-learning tools assume that learners can already read instructions, recognise written words, and spell independently. This creates a barrier for adults who need to build those skills first.
+The website now has working on-device learning flows, rather than page skeletons:
 
-My English Practice starts with listening, then guides the learner through spelling one letter at a time. Immediate, calm corrections prevent repeated guessing. Short explanations, useful vocabulary, and repeated practice help the learner connect sounds, letters, and meaning without childish content or punitive grades.
+- Listen-and-spell with normal and slow browser speech, immediate wrong-letter feedback, blocking, case-insensitive input, backspace and paste prevention.
+- An explicitly requested hint ladder after two incorrect letters: slow replay, first-letter support and syllable breaking.
+- Same-session mistake retries, next-day review and the adapted FSRS-style scheduling rules in `ARCHITECTURE.md`.
+- Mastery requiring independent success on separate days, including a long review interval.
+- Forty-three curated practice items across eight PRD-defined levels, including everyday dictation phrases.
+- Phonics and word-family information, syllable stress, listen-and-repeat, optional microphone transcription and short reading-aloud passages.
+- A dashboard calculated from actual saved attempts and sessions, not demonstration metrics.
+- IndexedDB progress, per-letter checkpoints, session resume, offline operation of the loaded drill and production service-worker caching.
+- Preferences, progress export/import, local reset and optional Supabase accounts/cloud sync.
+- About, Contact, Help and Accessibility, Privacy and Terms pages; no ads or tracking SDKs.
 
-The goal is steady, measurable improvement through **15–25 minutes of daily practice**, not perfect performance on the first attempt.
+## Why it exists
 
-## Learning principles
+Many English-learning tools assume fluent reading and independent spelling. This project starts with listening and small steps, using practical adult vocabulary about work, travel, money and daily life. There are no public rankings or punitive pronunciation grades.
 
-- Use British English spelling and request `en-GB` speech voices.
-- Choose adult-appropriate vocabulary about work, money, travel, and daily life.
-- Keep instructions short, readable, and available as audio.
-- Introduce one difficulty at a time; do not assume fluent reading.
-- Treat mistakes as information about what to practise next.
-- Keep recognition feedback supportive: **“I heard: …”**, not a harsh pronunciation grade.
-- Make practice accessible by keyboard, touch, and assistive technology.
+Aim for 15–25 minutes daily. Sessions can be paused or finished early. The initial curriculum is a reviewed starter set, not a complete language course or accredited qualification.
 
-## Planned features
+## Quick start
 
-### Listening and spelling
+Requirements: Node.js 22.13 or later, npm and a modern browser.
 
-- Normal-speed and slow-speed word playback, with replay controls.
-- Letter-by-letter spelling with an accessible text-entry interface.
-- Instant red highlighting for an incorrect letter, accompanied by plain text such as **“Wrong letter — it should be O.”**
-- Progress blocked at the incorrect position until the correct letter is entered.
-- A hint ladder after two failed attempts at the same letter position.
-- Whole-word repetition and a short meaning or practical example after completion.
-- Word dictation, followed later by sentence dictation.
-
-### Sounds and reading
-
-- Phonics modules for letter–sound relationships, including common digraphs.
-- Syllable breaking with visible and audible chunks.
-- Spelling patterns and word families.
-- Listen-and-repeat pronunciation activities.
-- Optional microphone speak-and-check where browser recognition is supported.
-- Short, adult-appropriate reading-aloud passages.
-
-### Review and progress
-
-- Eight levels, from simple CVC words such as **cat** to harder words such as **business**.
-- FSRS-based spaced repetition, combined with a same-session retry queue.
-- Every spelling mistake returns later in the session and enters a next-day review path; subsequent reviews are spaced according to performance.
-- Mastery earned through successful reviews on separate days, not repeated success in one sitting.
-- A dashboard showing first-try accuracy, words mastered, review workload, and common mistake types.
-- Supabase accounts and progress synchronisation, protected by row-level security.
-- Guided daily sessions lasting approximately 15–25 minutes.
-
-## How the core drill works
-
-1. **Start a session.** The learner receives due reviews and a small selection of new words appropriate to their level.
-2. **Hear the word.** Play it at normal speed, then at a slower rate. Keep replay buttons available. Do not show the complete spelling before the attempt.
-3. **Enter one letter at a time.** For example, the learner builds **P-E-R-S-O-N** through six letter positions; the hyphens are display separators, not required input.
-4. **Check immediately.** Correct letters are accepted. An incorrect letter turns red and receives a plain correction. The current position stays active until it is correct.
-5. **Offer help after two failed tries.** Use progressively stronger support: replay the word, isolate the relevant sound or syllable, then show and speak the target letter. Because the correction already reveals the letter, assisted completion does not count as first-try success.
-6. **Complete and reinforce.** Show the complete word, replay it, and provide a brief meaning or everyday example. Offer an optional repeat-aloud attempt.
-7. **Record the outcome.** Save the first attempt, errors by position, hints used, and completion. Backspace, navigation, and empty input are not mistakes.
-8. **Return to mistakes.** Reinsert missed words after several intervening items. Keep unresolved reviews available if the session ends early, and schedule a next-day review before longer intervals.
-
-Input is case-insensitive. Paste, autofill, and multi-character input must not bypass checking; process each letter in order. A whole-word reveal or hint remains available so the learner cannot become permanently stuck.
-
-## Levels and vocabulary
-
-These are curriculum bands, not formal CEFR certifications. Final placement depends on reviewed word difficulty, spelling patterns, and learner performance.
-
-| Level | Main focus | Example words |
-| --- | --- | --- |
-| 1 | Simple consonant–vowel–consonant words | cat, cup, bus |
-| 2 | Common consonant blends and digraphs | shop, bank, desk |
-| 3 | Common long-vowel patterns and silent e | name, time, rain |
-| 4 | Frequent vowel teams and r-influenced vowels | team, train, park |
-| 5 | Practical two-syllable words | hotel, ticket, payment |
-| 6 | Common endings, prefixes, and word families | working, helpful, return |
-| 7 | Less predictable spellings and longer words | business, journey, answer |
-| 8 | Revision and mixed challenge across bands | mixed |
-
-## Technology stack
-
-| Area | Choice | Notes |
-| --- | --- | --- |
-| Frontend | React + TypeScript | Built with Vite. |
-| Styling | CSS Modules or Tailwind CSS | Decide in Phase 0; keep the choice consistent. |
-| Accounts and data | Supabase | Authentication, Postgres, and row-level security. |
-| Spaced repetition | FSRS | Implemented in TypeScript; no paid service required. |
-| Audio (initial) | Browser speech synthesis | Normal and slow playback via `en-GB` voices. |
-| Audio (later) | Pre-generated audio files | Replaces synthesis for consistency. |
-| Microphone | Web Speech API | Used only where supported; feedback shown as “I heard: …”. |
-| Hosting | Free static hosting | For example, Vercel, Netlify, or Cloudflare Pages. |
-| Source control | GitHub | Repository: `min955379-glitch/My-English-Practice`. |
-
-## Project structure
-
-The repository starts with documentation. Application code is added in later phases.
-
-```text
-My-English-Practice/
-├── README.md
-├── ROADMAP.md
-├── .gitignore
-├── src/                # Added in Phase 1
-├── public/             # Added in Phase 1
-└── supabase/           # Added in Phase 2
+```bash
+npm ci
+cp .env.example .env.local
+npm run dev
 ```
 
-## Running locally
+Open `http://localhost:3000`. No database credentials are required for on-device practice. Leave the Supabase variables empty to use guest mode.
 
-1. Install [Node.js](https://nodejs.org/) 20 or later.
-2. Clone the repository and install dependencies:
-   ```bash
-   git clone https://github.com/min955379-glitch/My-English-Practice.git
-   cd My-English-Practice
-   npm install
-   ```
-3. Copy `.env.example` to `.env` and fill in the values below.
-4. Start the development server:
-   ```bash
-   npm run dev
-   ```
+```bash
+npm run lint
+npm run typecheck
+npm test
+npm run build
+npm run start
+```
+
+Browser tests require a running development or production server:
+
+```bash
+npx playwright install --with-deps chromium
+npm run test:e2e
+```
+
+Set `TEST_BASE_URL` if the server uses another origin. Browser tests include keyboard spelling, hints, retries, reload persistence, offline practice, mobile layout and automated accessibility checks.
+
+### TypeScript compatibility
+
+TypeScript 7 supplies `tsc` through the `@typescript/native` npm alias. The official TypeScript 6 compatibility package supplies the API required by Next.js's ESLint tooling. The lockfile pins the working combination. Some bundled ESLint plugins report peer-version warnings with ESLint 10; linting, compilation and tests pass.
 
 ## Environment variables
 
-| Variable | Required | Purpose |
-| --- | --- | --- |
-| `VITE_SUPABASE_URL` | Yes, from Phase 2 | Supabase project URL. |
-| `VITE_SUPABASE_ANON_KEY` | Yes, from Phase 2 | Supabase anonymous public key. |
+| Variable | Use |
+| --- | --- |
+| `DATABASE_URL` | Server-only PostgreSQL URL; needed for migrations, seed and cloud sync |
+| `NEXT_PUBLIC_SUPABASE_URL` | Public Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Public Supabase publishable client key |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supported alternative to the publishable key |
+| `SUPABASE_SERVICE_ROLE_KEY` | Optional server-only admin key for permanent account deletion |
+| `NEXT_PUBLIC_SITE_URL` | Optional public deployment origin for sitemap generation |
+| `ALLOW_PREVIEW_EMBEDDING` | Set to `1` only for an embedded sandbox preview; leave unset for normal public deployment |
 
-Only public, non-secret values belong in the frontend environment. Service-role keys must never be exposed in the browser.
+Never put server secrets in `NEXT_PUBLIC_` variables. Keep `.env.local` out of version control. Use the TLS settings required by your database provider; the application does not disable certificate validation.
 
-## Deployment plan
+## Database setup
 
-- Host the built site on a free static host (Vercel, Netlify, or Cloudflare Pages).
-- Connect the GitHub repository so pushes to the main branch deploy automatically.
-- Set the environment variables in the hosting dashboard.
-- Confirm British English defaults: `en-GB` speech voices, British spellings, and date formats.
-- Prepare AdSense-ready pages (about, contact, privacy policy) during Phase 4 before applying.
+Use a fresh Supabase PostgreSQL database with its managed Auth schema and `anon` and `authenticated` roles already available.
 
-## Project status
+```bash
+npm run db:migrate
+npm run db:seed
+```
 
-### Current status
+Existing databases created outside the migration history must be backed up and baselined before applying the initial migration. Do not apply a fresh initial migration blindly to existing tables, and do not use destructive schema pushes against learner data.
 
-- [x] Project documentation drafted (`README.md`, `ROADMAP.md`).
-- [ ] Phase 0 setup completed.
-- [ ] MVP core drill implemented.
+The schema includes application identities, profiles, settings, levels, phonics patterns, vocabulary, sessions, append-only attempts, review schedules, level progress and a versioned local-first backup. Supabase owns `auth.users`; migrations reference it without recreating it.
 
-### Next steps
+Cloud sync verifies the bearer token through Supabase Auth, sets transaction-local identity claims and switches the PostgreSQL transaction to the non-bypass `authenticated` role. The migration includes table grants and ownership RLS policies. The server never trusts a client-provided owner ID. The configured database connection must be permitted to set that role.
 
-- [ ] Create the GitHub repository `min955379-glitch/My-English-Practice` and push these files.
-- [ ] Connect the repository to the Phase 0 setup checklist in `ROADMAP.md`.
+Accounts and guest practice use separate browser stores. Export guest progress before signing in if you want to import it into an account. Signing out does not expose the account's data in the guest dashboard.
+
+## Review rules
+
+The checked-in architecture specifies a simplified FSRS-style model, not the reference FSRS algorithm:
+
+- New cards start with a one-day interval.
+- Errors or hints reset the interval to one day and increase difficulty.
+- Independent success on a later day extends the interval by approximately 2.5 times.
+- Same-day repetition cannot earn mastery.
+- Three independent successes on different local dates, including a review after at least seven days, are needed for mastery.
+- A new error removes mastery.
+
+Same-session retries are a separate queue, limited to two reinsertion cycles per word to avoid an endless session. Unresolved items remain in the next-day review path. Level unlocks require three qualifying sessions on separate dates, including a recent session. Optional pronunciation and dictation previews do not unlock the spelling curriculum.
+
+See `IMPLEMENTATION.md` for documented interpretations of contradictory requirements.
+
+## Browser audio and microphone
+
+The website requests British English voices and clearly labels a standard-English fallback. Device voices may be unavailable or may depend on a network connection. Written assisted practice remains available if audio cannot play.
+
+Microphone recognition starts only after consent and a button press. The browser provider may process speech remotely. This website does not save recordings or transcripts. Feedback is “I heard”, never a pronunciation grade. Real-device permissions and voice quality require manual testing.
+
+## Structure
+
+```text
+src/
+  app/                 Pages, metadata and authenticated API routes
+  components/          Layout, design system and interactive practice
+  content/             Shared curated curriculum
+  db/                  Drizzle schema, client, migration runner and seed
+  hooks/               Browser speech adapter
+  lib/                 Learning rules, validation, types and persistence
+public/                 Service worker and advertising status file
+drizzle/                Versioned SQL migrations and snapshots
+tests/                  Learning, database policy and browser tests
+validation/             Recorded audit output
+```
+
+## Deployment
+
+Deploy the Next.js application to a compatible free hosting plan, subject to that provider's current terms and quotas. Configure public Supabase values before building and server-only database values in hosting settings. Apply migrations and seed to the production database separately. Add the deployment URL to Supabase's allowed authentication URLs.
+
+Keep `ALLOW_PREVIEW_EMBEDDING` unset in public production builds. Production responses then retain frame restrictions. HTTPS is required for secure browser microphone and service-worker features.
+
+`/api/health` is a liveness endpoint. `/api/readiness` checks PostgreSQL and returns HTTP 503 when it is unavailable or unconfigured. Neither endpoint exposes credentials.
+
+Advertising is not enabled. Public information pages and `ads.txt` state the actual implementation. AdSense approval, a configured operator contact method and any necessary consent controls remain deployment work; do not invent a publisher ID.
+
+## Validation and remaining release work
+
+Automated learning tests, embedded PostgreSQL migration/RLS tests, Chromium browser tests, lint and strict type checking pass. Production builds pass. Automated accessibility checks report no violations on the tested pages and mobile wrong-letter state; this is not independent certification.
+
+A local mobile Lighthouse run measured Performance 92, Accessibility 100, Best Practices 96 and SEO 100 on the home page. LCP was 2.6 seconds and CLS was zero. Results vary by deployment and device; the architecture's sub-2.5-second LCP target still needs a deployed audit.
+
+No live Supabase credentials or hosting account are available in this workspace. Hosted authentication, cloud sync, permanent account deletion, real microphone recognition and public deployment have not been end-to-end verified. The source has not been pushed to GitHub by this build.
+
+See `ROADMAP.md` for checked implementation work and remaining release gates.

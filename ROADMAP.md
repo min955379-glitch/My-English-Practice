@@ -1,85 +1,72 @@
-# My English Practice — Roadmap
+# My English Practice — Implementation roadmap
 
-## Delivery goal
+## Phase 0 — Foundation
 
-Build a usable, supportive British English practice website for an adult beginner, starting with a reliable listen-and-spell drill and growing into phonics, spaced repetition, pronunciation practice, and a progress dashboard.
+- [x] Next.js 16 App Router, React 19, strict TypeScript and Tailwind v4.
+- [x] Calm responsive layout, Inter, keyboard focus and SVG icons.
+- [x] PostgreSQL schema, migration runner and idempotent vocabulary seed.
+- [x] RLS policies, grants and ownership constraints.
+- [x] Environment template and automated checks.
+- [x] Liveness and database-readiness endpoints.
+- [ ] Apply migrations and seed to the operator's live Supabase project.
 
-## Guiding constraints
+**Done when:** the local foundation is tested and the live database is verified. Local implementation passes; hosted database verification remains open.
 
-- British English throughout.
-- Adult-appropriate vocabulary and tone.
-- Free technology only.
-- Short, calm feedback; no harsh grades.
-- Accessibility from the first interactive phase.
+## Phase 1 — Listen-and-spell
 
-## Phase 0 — Project docs and setup
+- [x] Normal and slow speech, replay and written audio fallback.
+- [x] Immediate letter checking, red wrong letters and advancement blocking.
+- [x] Explicit hint ladder after two incorrect letters.
+- [x] Completion meanings and spoken example sentences.
+- [x] Attempt and mistake recording in IndexedDB.
+- [x] Same-session retries and next-day reviews.
+- [x] Session timer, pause, early finish, checkpoints and reload resume.
+- [x] Mobile input, keyboard operation and offline loaded-drill tests.
 
-- [ ] Create the GitHub repository `min955379-glitch/My-English-Practice`.
-- [ ] Push `README.md` and `ROADMAP.md`.
-- [ ] Initialise the React + TypeScript project with Vite.
-- [ ] Choose the styling approach (CSS Modules or Tailwind CSS) and document the decision.
-- [ ] Add `.gitignore`, `.env.example`, and basic scripts (`dev`, `build`, `preview`).
-- [ ] Confirm the production build runs from a clean install.
+**Done when:** learners can complete, interrupt, resume and review real spelling practice. Automated browser tests pass; real-device voice testing remains advisable.
 
-**Done when:** the repository builds from a clean install and the docs describe the current setup.
+## Phase 2 — Teaching and progress
 
-## Phase 1 — MVP: core listen-and-spell drill
+- [x] All eight PRD-defined levels and forty-three starter items.
+- [x] Phonics patterns, syllable chunks, stress and word-family metadata.
+- [x] Adapted FSRS-style scheduler with separate-day mastery.
+- [x] Accuracy, mastery, mistake patterns, level progress and session history.
+- [x] Level unlock rules and locked-level review filtering.
+- [x] Local settings and progress export/import.
+- [x] Authenticated Drizzle sync and server-side review recomputation.
+- [x] Supabase account UI with separate account/guest stores.
+- [ ] Verify sign-up, sign-in, sync and cross-device restoration against live Supabase.
+- [ ] Expand the starter curriculum after learner/content review.
 
-- [ ] Implement normal-speed and slow-speed word playback using browser speech synthesis with `en-GB` voices.
-- [ ] Build the letter-by-letter spelling interface with keyboard and touch support.
-- [ ] Add instant incorrect-letter highlighting with plain-language corrections.
-- [ ] Block progress at the incorrect position until the correct letter is entered.
-- [ ] Implement the hint ladder after two failed attempts at the same letter position.
-- [ ] Add word lists for Levels 1–3 with adult-appropriate vocabulary.
-- [ ] Save basic mistake records locally (word, position, hint usage, timestamp).
-- [ ] Add a simple session flow: due items, new words, and a short summary.
+**Done when:** local learning and metrics are reliable, and the configured hosted sync path passes live account tests. Local tests pass; cloud verification remains open.
 
-**Done when:** a learner can complete a full listen-and-spell session for Levels 1–3 with mistakes recorded.
+## Phase 3 — Spoken and contextual practice
 
-## Phase 2 — Phonics, spaced repetition, and dashboard
+- [x] Listen-and-repeat reference words with IPA and stress hints.
+- [x] Optional recognition with explicit consent and “I heard” feedback.
+- [x] Non-recognition alternative and supportive error handling.
+- [x] Short adult reading passages and optional self-comparison timer.
+- [x] Phrase dictation with spaces and per-letter corrections.
+- [ ] Manually test recognition permissions and transcripts on supported real browsers.
+- [ ] Review audio quality with an adult beginner using a British English voice.
 
-- [ ] Add phonics modules for letter sounds, including common digraphs.
-- [ ] Add syllable breaking with visible and audible chunks.
-- [ ] Add spelling patterns and word families.
-- [ ] Implement FSRS-based spaced repetition with a same-session retry queue.
-- [ ] Return every mistake later in the session and schedule next-day reviews.
-- [ ] Add Supabase authentication and progress synchronisation with row-level security.
-- [ ] Build the progress dashboard: first-try accuracy, words mastered, review workload, and common mistake types.
-- [ ] Extend word lists to Levels 4–6.
+**Done when:** speaking and reading remain usable without recognition, and real-device audio behaviour is reviewed. Non-microphone browser flows pass.
 
-**Done when:** mistakes resurface on schedule, progress syncs across devices, and the dashboard reflects real practice data.
+## Phase 4 — Release preparation
 
-## Phase 3 — Pronunciation, fluency, and dictation
+- [x] Responsive landing page and learning pages.
+- [x] Automated accessibility checks and contrast fixes.
+- [x] Public About, Contact, Help, Privacy and Terms pages.
+- [x] Production service-worker caching, sitemap and robots rules.
+- [x] Progress reset and authenticated account-deletion implementation.
+- [x] Security headers and explicit sandbox-only embedding option.
+- [x] Production build and production Chromium smoke tests.
+- [x] Local Lighthouse audit with results saved in `validation`.
+- [ ] Verify live account deletion and production backup procedures.
+- [ ] Configure a deployment URL, operator contact details and hosting account.
+- [ ] Run deployed performance and real-device accessibility/usability audits.
+- [ ] Reach the sub-2.5-second LCP target on the deployed site.
+- [ ] Add reviewed reference audio with documented licensing.
+- [ ] Apply for AdSense only if desired, using actual publisher details and necessary consent controls.
 
-- [ ] Add microphone speak-and-check using the Web Speech API where supported.
-- [ ] Show recognition feedback as a supportive hint (“I heard: …”), never a harsh grade.
-- [ ] Add listen-and-repeat pronunciation activities.
-- [ ] Add short, adult-appropriate reading-aloud passages with fluency support.
-- [ ] Add sentence dictation alongside word dictation.
-- [ ] Extend word lists to Levels 7–8.
-
-**Done when:** a learner can practise speaking and reading aloud with supportive feedback, and complete sentence dictation.
-
-## Phase 4 — Polish, deployment, and AdSense readiness
-
-- [ ] Polish the interface, loading states, and error messages.
-- [ ] Add accessibility review: keyboard navigation, screen readers, and colour contrast.
-- [ ] Deploy to free static hosting with automatic deploys from the main branch.
-- [ ] Add AdSense-ready pages: about, contact, and privacy policy.
-- [ ] Verify British English defaults across the site.
-- [ ] Run a full end-to-end test of a daily session.
-
-**Done when:** the site is live, accessible, and ready for real learners and AdSense review.
-
-## Out of scope for now
-
-- Native mobile applications.
-- Paid APIs or services.
-- Social features or leaderboards.
-- Content beyond the planned eight levels.
-
-## Tracking
-
-- A simple task board (for example, GitHub Projects) mirrors the phase checklists.
-- Each phase checklist is the source of truth for progress.
-- Update this file when scope changes; keep completed tasks checked.
+**Done when:** public hosting, real accounts, privacy operations and deployed audits are verified. The workspace preview is running; public deployment and advertising approval are not claimed.
